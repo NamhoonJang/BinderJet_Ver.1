@@ -189,7 +189,7 @@ namespace XAARWinform
         {
             PrintSequence sequence;
             sequence = xpmInterconnection.CreatePrintSequence(_macAddress, "Sequence#0", printhead);
-            sequence.Add(new PrintOperation("Swathe#0"));
+            sequence.Add(new PrintOperation("swathe#0"));
             sequence.Run();
         }
 

@@ -4240,10 +4240,21 @@ namespace BinderJetMotionControllerVer._1
 
         private void button3_Click(object sender, EventArgs e)
         {
-            Printhead.WriteWaveForm_d844();
+            Printhead.WriteWaveForm_dh93();
         }
 
         private void button4_Click(object sender, EventArgs e)
+        {
+            Printhead.cleanstart1();
+            Printhead.cleanstart2();
+        }
+
+        private void button5_Click(object sender, EventArgs e)
+        {
+            Printhead.cleanstop();
+        }
+
+        private void button6_Click(object sender, EventArgs e)
         {
             Printhead.WriteWaveForm_h884();
         }

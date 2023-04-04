@@ -299,6 +299,8 @@ namespace BinderJetMotionControllerVer._1
             this.piczmovechk = new System.Windows.Forms.PictureBox();
             this.button3 = new System.Windows.Forms.Button();
             this.button4 = new System.Windows.Forms.Button();
+            this.button5 = new System.Windows.Forms.Button();
+            this.button6 = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.imagebox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.imgtrackbar)).BeginInit();
             this.panel1.SuspendLayout();
@@ -4154,6 +4156,26 @@ namespace BinderJetMotionControllerVer._1
             this.button4.UseVisualStyleBackColor = true;
             this.button4.Click += new System.EventHandler(this.button4_Click);
             // 
+            // button5
+            // 
+            this.button5.Location = new System.Drawing.Point(391, 591);
+            this.button5.Name = "button5";
+            this.button5.Size = new System.Drawing.Size(87, 23);
+            this.button5.TabIndex = 445;
+            this.button5.Text = "button5";
+            this.button5.UseVisualStyleBackColor = true;
+            this.button5.Click += new System.EventHandler(this.button5_Click);
+            // 
+            // button6
+            // 
+            this.button6.Location = new System.Drawing.Point(506, 593);
+            this.button6.Name = "button6";
+            this.button6.Size = new System.Drawing.Size(89, 20);
+            this.button6.TabIndex = 446;
+            this.button6.Text = "button6";
+            this.button6.UseVisualStyleBackColor = true;
+            this.button6.Click += new System.EventHandler(this.button6_Click);
+            // 
             // MotionController
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
@@ -4162,6 +4184,8 @@ namespace BinderJetMotionControllerVer._1
             this.AutoScrollMinSize = new System.Drawing.Size(200, 200);
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(44)))), ((int)(((byte)(52)))));
             this.ClientSize = new System.Drawing.Size(1254, 642);
+            this.Controls.Add(this.button6);
+            this.Controls.Add(this.button5);
             this.Controls.Add(this.button4);
             this.Controls.Add(this.button3);
             this.Controls.Add(this.piczmovechk);
@@ -4704,6 +4728,8 @@ namespace BinderJetMotionControllerVer._1
         private System.Windows.Forms.Panel showpnlplate;
         private System.Windows.Forms.Button button3;
         private System.Windows.Forms.Button button4;
+        private System.Windows.Forms.Button button5;
+        private System.Windows.Forms.Button button6;
     }
 }
 

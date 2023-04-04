@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.2.32616.157
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BinderJetMotionControllerVer._1", "BinderJetMotionControllerVer._1.csproj", "{0E8D1F1D-840A-4B83-B6B0-8B9B50E558A1}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Debug|x64 = Debug|x64
+		Release|Any CPU = Release|Any CPU
+		Release|x64 = Release|x64
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{0E8D1F1D-840A-4B83-B6B0-8B9B50E558A1}.Debug|Any CPU.ActiveCfg = Release|Any CPU
+		{0E8D1F1D-840A-4B83-B6B0-8B9B50E558A1}.Debug|Any CPU.Build.0 = Release|Any CPU
+		{0E8D1F1D-840A-4B83-B6B0-8B9B50E558A1}.Debug|x64.ActiveCfg = Debug|x64
+		{0E8D1F1D-840A-4B83-B6B0-8B9B50E558A1}.Debug|x64.Build.0 = Debug|x64
+		{0E8D1F1D-840A-4B83-B6B0-8B9B50E558A1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0E8D1F1D-840A-4B83-B6B0-8B9B50E558A1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0E8D1F1D-840A-4B83-B6B0-8B9B50E558A1}.Release|x64.ActiveCfg = Release|x64
+		{0E8D1F1D-840A-4B83-B6B0-8B9B50E558A1}.Release|x64.Build.0 = Release|x64
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {4D31D3DA-54F7-4E0A-84D6-297F7D237013}
+	EndGlobalSection
+EndGlobal

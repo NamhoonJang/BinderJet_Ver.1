@@ -88,16 +88,16 @@
     <Reference Include="System.Xml" />
     <Reference Include="WindowsBase" />
     <Reference Include="Xaar.Common">
-      <HintPath>bin\Debug\Xaar.Common.dll</HintPath>
+      <HintPath>C:\Program Files\Xaar\XPM Suite-3.0.7741.96\Xaar.Common.dll</HintPath>
     </Reference>
     <Reference Include="Xaar.Core">
-      <HintPath>bin\Debug\Xaar.Core.dll</HintPath>
+      <HintPath>C:\Program Files\Xaar\XPM Suite-3.0.7741.96\Xaar.Core.dll</HintPath>
     </Reference>
     <Reference Include="Xaar.Framework">
-      <HintPath>bin\Debug\Xaar.Framework.dll</HintPath>
+      <HintPath>C:\Program Files\Xaar\XPM Suite-3.0.7741.96\Xaar.Framework.dll</HintPath>
     </Reference>
     <Reference Include="Xaar.XpmServer.Core">
-      <HintPath>bin\Debug\Xaar.XpmServer.Core.dll</HintPath>
+      <HintPath>C:\Program Files\Xaar\XPM Suite-3.0.7741.96\Xaar.XpmServer.Core.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>

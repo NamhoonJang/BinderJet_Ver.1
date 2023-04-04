@@ -42,7 +42,14 @@ namespace XAARWinform
         static private int _phIndex = 0;
         static private bool _useExtPd = true;
         static private bool _useExtEnc = true;
+        private int _swPdCounts = 5;
+        private int _swPdInterval = 2000;
         private List<string> _imageTags;
+
+        AutoResetEvent swPdCompleted;
+        AutoResetEvent swPdCompleted2;
+        System.Timers.Timer swPdTimer;
+        System.Timers.Timer swPdTimer2;
 
         bool FirstInit = false;
 
@@ -93,7 +100,26 @@ namespace XAARWinform
 
             xpmInterconnection.DisableIdleSpitting();
         }
-        
+
+        public void config2()
+        {
+            phType = xpmInterconnection.GetAllPrintheadInformation().First(p => p.XspiPort.Equals(_phIndex)).PrintheadTag.PrintheadType;
+            printhead = ExamplesUtilities.GetDefaultPrintead(phType, _phIndex);
+            productDetect = ExamplesUtilities.GetProductDetect(_useExtPd);
+            transportEncoder = ExamplesUtilities.GetTransportEncoder(_useExtEnc);
+            phsPerXpmMap = new Dictionary<string, IList<int>> { { _macAddress, new[] { _phIndex } } };
+
+            xpmInterconnection.SetGlobalPrintParameters(ExamplesUtilities.GetGlobalPrintParameters());
+
+            const int tePdChainIndex = 0;
+            var tePdChain = new TransportEncoderProductDetectChain(transportEncoder, productDetect, tePdChainIndex);
+            var phChainMapping = new List<PrintheadTePdChainAssociation> {
+                    new PrintheadTePdChainAssociation { PrinteadIndex = _phIndex, TransportEncoderProductDetectChain = tePdChainIndex }};
+            if (!xpmInterconnection.SetupTransportEncoderProductDetectChains(_macAddress, phChainMapping, new[] { tePdChain })) return;
+
+            xpmInterconnection.DisableIdleSpitting();
+        }
+
 
         public void Disconnect()
         {
@@ -140,6 +166,31 @@ namespace XAARWinform
             sequence.Run();
 
             //Console.WriteLine(@"Downloading swathes");
+        }
+
+        public void Whiteimagesave()
+        {
+            /*
+            var rows = printhead.PrintheadProperties.NumberOfRows;
+
+            var imageFullName = Path.Combine(ExamplesUtilities.GetImagePath(), "white.bmp");
+
+            var uri = new System.Uri(imageFullName);
+            var image = new BitmapImage(uri);
+            var swatheMetadata = new SwatheMetadata { Tag = string.Format("Swathe#0"), PixelHeight = image.PixelHeight };
+            var swathe = new BitmapSwathe(image, phType) { Metadata = swatheMetadata };
+            if (!xpmInterconnection.DownloadSwathe(_macAddress, swathe)) return;
+            */
+            ImageSwatheDown("white.bmp", "swathe#0");
+            creatprintsquence_purge();
+        }
+
+        public void creatprintsquence_purge()
+        {
+            PrintSequence sequence;
+            sequence = xpmInterconnection.CreatePrintSequence(_macAddress, "Sequence#0", printhead);
+            sequence.Add(new PrintOperation("Swathe#0"));
+            sequence.Run();
         }
 
         public void Swathedown2()
@@ -704,9 +755,95 @@ namespace XAARWinform
             xpmInterconnection.WriteWaveform("00-1e-c0-ad-28-0c", 0, 0, "C:\\Users\\Binder_Jet\\Desktop\\waveform\\D844-1001.6-8L-720.txt");
         }
 
-        public void WriteWaveForm_h884()
+        //public void WriteWaveForm_h884()
+        //{
+        //    xpmInterconnection.WriteWaveform("00-1e-c0-ad-28-0c", 0, 0, "C:\\Users\\Binder_Jet\\Desktop\\waveform\\H884-100312-7LCB-CONFIDENTIAL.txt");
+        //}
+
+        public void EncoderchangeInternal()
         {
-            xpmInterconnection.WriteWaveform("00-1e-c0-ad-28-0c", 0, 0, "C:\\Users\\Binder_Jet\\Desktop\\waveform\\H884-100312-7LCB-CONFIDENTIAL.txt");
+            config2();
+            xpmInterconnection.SetGlobalPrintParameters(ExamplesUtilities.GetGlobalPrintParameters());
+        }
+        public void EncoderchangeExternal()
+        {
+            config();
+            xpmInterconnection.SetGlobalPrintParameters(ExamplesUtilities.GetGlobalPrintParameters());
+        }
+        public void cleanstart1()
+        {
+            //WriteWaveForm_h884();
+            //WriteWaveForm_dh93();
+            EncoderchangeInternal();
+            Whiteimagesave();
+        }
+
+        public void cleanstart2()
+        {
+            printstart();
+            swPdCompleted = new AutoResetEvent(false);
+            //swPdCompleted2 = new AutoResetEvent(false);
+            swPdTimer = ExamplesUtilities.SetupSoftwarePdTimer(xpmInterconnection, _macAddress, 0, _swPdInterval, _swPdCounts, swPdCompleted);
+            //swPdTimer2 = ExamplesUtilities.SetupSoftwarePdTimer(xpmInterconnection, _macAddress, 1, _swPdInterval, _swPdCounts, swPdCompleted2);
+            swPdTimer.Start();
+            //swPdTimer2.Start();
+        }
+
+        public void cleanstop()
+        {
+            swPdCompleted.WaitOne();
+            //swPdCompleted2.WaitOne();
+            swPdTimer.Stop();
+            //swPdTimer2.Stop();
+            //WriteWaveForm_h884();
+            printstop();
+            swathesquencedel();
+            config();
+        }
+        bool waveformwite;
+        public void WriteWaveForm_dh93()//클리닝 웨이브폼
+        {
+            var waveformPath = ExamplesUtilities.GetWaveformPath();
+
+            var dh93WaveformPaletteRemapTableIncluded = @"DH93-10036-0LCB-CONFIDENTIAL.txt";
+
+            var dh93WaveformFullPath = Path.Combine(waveformPath, dh93WaveformPaletteRemapTableIncluded);
+
+            waveformwite = xpmInterconnection.WriteWaveform("00-1e-c0-ad-28-0c", 0, 0, dh93WaveformFullPath);
+            if (waveformwite) Console.WriteLine(@"0,0 DH93 write");
+            //Thread.Sleep(1000);
+            waveformwite = xpmInterconnection.WriteWaveform("00-1e-c0-ad-28-0c", 0, 1, dh93WaveformFullPath);
+            if (waveformwite) Console.WriteLine(@"0,1 DH93 write");
+            //Thread.Sleep(1000);
+            waveformwite = xpmInterconnection.WriteWaveform("00-1e-c0-ad-28-0c", 1, 0, dh93WaveformFullPath);
+            if (waveformwite) Console.WriteLine(@"1,0 DH93 write");
+            //Thread.Sleep(1000);
+            waveformwite = xpmInterconnection.WriteWaveform("00-1e-c0-ad-28-0c", 1, 1, dh93WaveformFullPath);
+            if (waveformwite) Console.WriteLine(@"1,1 DH93 write");
+            //Thread.Sleep(1000);
+
+        }
+
+        public void WriteWaveForm_h884()//적층용 웨이브폼
+        {
+            var waveformPath = ExamplesUtilities.GetWaveformPath();
+
+            var h884WaveformPaletteRemapTableIncluded = @"H884-100312-7LCB-CONFIDENTIAL.txt";
+
+            var h884WaveformFullPath = Path.Combine(waveformPath, h884WaveformPaletteRemapTableIncluded);
+
+            waveformwite = xpmInterconnection.WriteWaveform("00-1e-c0-ad-28-0c", 0, 0, h884WaveformFullPath);
+            if (waveformwite) Console.WriteLine(@"0,0 H884 write");
+            //Thread.Sleep(1000);
+            waveformwite = xpmInterconnection.WriteWaveform("00-1e-c0-ad-28-0c", 0, 1, h884WaveformFullPath);
+            if (waveformwite) Console.WriteLine(@"0,1 H884 write");
+            //Thread.Sleep(1000);
+            waveformwite = xpmInterconnection.WriteWaveform("00-1e-c0-ad-28-0c", 1, 0, h884WaveformFullPath);
+            if (waveformwite) Console.WriteLine(@"1,0 H884 write");
+            //Thread.Sleep(1000);
+            waveformwite = xpmInterconnection.WriteWaveform("00-1e-c0-ad-28-0c", 1, 1, h884WaveformFullPath);
+            if (waveformwite) Console.WriteLine(@"1,1 H884 write");
+            //Thread.Sleep(1000);
         }
     }
 }

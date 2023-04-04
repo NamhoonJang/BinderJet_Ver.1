@@ -2557,9 +2557,38 @@ namespace BinderJetMotionControllerVer._1
             PaixMotion.SetSCurveSpeed(Yaxis, 50, 200, 200, 100);
             await AxisMovement_async(Yaxis, Yend2);
             */
-            Console.WriteLine("클리닝생략");
+            //Console.WriteLine("클리닝생략");
             //return new ind_head_cleaning();
-            
+
+            await Task.Delay(1000);
+            Console.WriteLine("InCleaning");
+            await AxisMovement_async(Xaxis, Xend - 20);//90(헤드 대기 위치)이동
+            await AxisMovement_async(Yaxis, Ystart);//y축 이동 - 57이 되어야함(DH)
+            await AxisMovement_async(Xaxis, Xstart);//20(DH)
+            ////PaixMotion.SetSCurveSpeed(Yaxis, iStartSpeed, iAccelSpeed, iDeccelSpeed, Yspeed);//클리닝 속도로 변경
+            ////await AxisMovement_async(Yaxis, Yend);
+            await Task.Delay(500);
+            Printhead.cleanstart1();
+            //textBox1.Text = Printhead.Row0WaveformIDRead();
+            //textBox2.Text = Printhead.Row1WaveformIDRead();
+            //textBox3.Text = Printhead.Row3WaveformIDRead();
+            //textBox4.Text = Printhead.Row4WaveformIDRead();
+            await Task.Delay(500);
+            Printhead.cleanstart2();
+            await Task.Delay(500);
+            Printhead.cleanstop();
+            //textBox1.Text = Printhead.Row0WaveformIDRead();
+            //textBox2.Text = Printhead.Row1WaveformIDRead();
+            //textBox3.Text = Printhead.Row3WaveformIDRead();
+            //textBox4.Text = Printhead.Row4WaveformIDRead();
+            await Task.Delay(500);
+            AxisMovement_async(Xaxis, Xend);
+            await AxisMovement_async(Yaxis, Yend2);
+            ////PaixMotion.SetSCurveSpeed(Yaxis, iStartSpeed, iAccelSpeed, iDeccelSpeed, Yspeed2);//일반 속도로 변경
+            ////PaixMotion.SetSCurveSpeed(Yaxis, 50, 200, 200, 100);
+
+            ////return new ind_head_cleaning();
+
         }
         private void AxisMovement(short axis, double position)
         {

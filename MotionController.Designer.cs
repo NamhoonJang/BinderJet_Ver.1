@@ -301,6 +301,8 @@ namespace BinderJetMotionControllerVer._1
             this.button4 = new System.Windows.Forms.Button();
             this.button5 = new System.Windows.Forms.Button();
             this.button6 = new System.Windows.Forms.Button();
+            this.Head_on = new System.Windows.Forms.Button();
+            this.Head_off = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.imagebox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.imgtrackbar)).BeginInit();
             this.panel1.SuspendLayout();
@@ -4176,6 +4178,40 @@ namespace BinderJetMotionControllerVer._1
             this.button6.UseVisualStyleBackColor = true;
             this.button6.Click += new System.EventHandler(this.button6_Click);
             // 
+            // Head_on
+            // 
+            this.Head_on.BackColor = System.Drawing.SystemColors.ControlDarkDark;
+            this.Head_on.FlatAppearance.BorderColor = System.Drawing.Color.Aquamarine;
+            this.Head_on.FlatAppearance.BorderSize = 0;
+            this.Head_on.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.Head_on.Font = new System.Drawing.Font("Lucida Console", 9F, System.Drawing.FontStyle.Bold);
+            this.Head_on.ForeColor = System.Drawing.SystemColors.ActiveCaption;
+            this.Head_on.Location = new System.Drawing.Point(860, 576);
+            this.Head_on.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            this.Head_on.Name = "Head_on";
+            this.Head_on.Size = new System.Drawing.Size(82, 25);
+            this.Head_on.TabIndex = 447;
+            this.Head_on.Text = "Head_on";
+            this.Head_on.UseVisualStyleBackColor = false;
+            this.Head_on.Click += new System.EventHandler(this.Head_on_Click);
+            // 
+            // Head_off
+            // 
+            this.Head_off.BackColor = System.Drawing.SystemColors.ControlDarkDark;
+            this.Head_off.FlatAppearance.BorderColor = System.Drawing.Color.Aquamarine;
+            this.Head_off.FlatAppearance.BorderSize = 0;
+            this.Head_off.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.Head_off.Font = new System.Drawing.Font("Lucida Console", 9F, System.Drawing.FontStyle.Bold);
+            this.Head_off.ForeColor = System.Drawing.SystemColors.ActiveCaption;
+            this.Head_off.Location = new System.Drawing.Point(950, 575);
+            this.Head_off.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            this.Head_off.Name = "Head_off";
+            this.Head_off.Size = new System.Drawing.Size(82, 25);
+            this.Head_off.TabIndex = 448;
+            this.Head_off.Text = "Head_off";
+            this.Head_off.UseVisualStyleBackColor = false;
+            this.Head_off.Click += new System.EventHandler(this.Head_off_Click);
+            // 
             // MotionController
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
@@ -4184,6 +4220,8 @@ namespace BinderJetMotionControllerVer._1
             this.AutoScrollMinSize = new System.Drawing.Size(200, 200);
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(44)))), ((int)(((byte)(52)))));
             this.ClientSize = new System.Drawing.Size(1254, 642);
+            this.Controls.Add(this.Head_off);
+            this.Controls.Add(this.Head_on);
             this.Controls.Add(this.button6);
             this.Controls.Add(this.button5);
             this.Controls.Add(this.button4);
@@ -4730,6 +4768,8 @@ namespace BinderJetMotionControllerVer._1
         private System.Windows.Forms.Button button4;
         private System.Windows.Forms.Button button5;
         private System.Windows.Forms.Button button6;
+        private System.Windows.Forms.Button Head_on;
+        private System.Windows.Forms.Button Head_off;
     }
 }
 

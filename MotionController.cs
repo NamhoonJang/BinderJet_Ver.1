@@ -84,7 +84,7 @@ namespace BinderJetMotionControllerVer._1
         private const short zStartSpeed = 1;
         private const short zAccelSpeed = 1;
         private const short zDeccelSpeed = 1;
-        private const short zDriveSpeed = 1;
+        private const short zDriveSpeed = 5;
         private const double PulseUnit = 0.001;
         private const double zPulseUnit = 0.0005;
         private const double SpeedLimit = 800;
@@ -108,7 +108,7 @@ namespace BinderJetMotionControllerVer._1
         private const double x2PosMaxLimit = 820;
         private const double x2PosMinLimit = 0;
         private const double yPosMaxLimit = 300;
-        private const double yPosMinLimit = 0;
+        private const double yPosMinLimit = -41;
         private const double zPosMaxLimit = 99.5;
         private const double zPosMinLimit = -29.5;
 
@@ -2058,8 +2058,8 @@ namespace BinderJetMotionControllerVer._1
             AxisMovement(Xaxis, Xaxis_ready_pos);
             AxisMovement(Yaxis, Yaxis_single_lane_pos);
 
-            var hcc = Task.Run(() => Head_Cleaning(Xaxis_Cleaning_pos, Xaxis_ready_pos, Yaxis_Cleaning_start_pos, Yaxis_Cleaning_end_pos, Yaxis_single_lane_pos, Yaxis_Cleaning_speed, Yaxis_speed));
-
+            //var hcc = Task.Run(() => Head_Cleaning(Xaxis_Cleaning_pos, Xaxis_ready_pos, Yaxis_Cleaning_start_pos, Yaxis_Cleaning_end_pos, Yaxis_single_lane_pos, Yaxis_Cleaning_speed, Yaxis_speed));
+            var hcc = Task.Run(() => Head_cleaning2());
             while (Currentlayer <= 1 && PrintEnable == true)
             {
                 if (Currentlayer == 1)
@@ -2313,7 +2313,8 @@ namespace BinderJetMotionControllerVer._1
 
                         if (Currentlayer % 10 == 0 || Currentlayer == 1)
                         {
-                            hcc = Task.Run(() => Head_Cleaning(Xaxis_Cleaning_pos, Xaxis_ready_pos, Yaxis_Cleaning_start_pos, Yaxis_Cleaning_end_pos, Yaxis_single_lane_pos, Yaxis_Cleaning_speed, Yaxis_speed));
+                            //hcc = Task.Run(() => Head_Cleaning(Xaxis_Cleaning_pos, Xaxis_ready_pos, Yaxis_Cleaning_start_pos, Yaxis_Cleaning_end_pos, Yaxis_single_lane_pos, Yaxis_Cleaning_speed, Yaxis_speed));
+                            hcc = Task.Run(() => Head_cleaning2());
                             await dwell;
 
                         }
@@ -2515,8 +2516,8 @@ namespace BinderJetMotionControllerVer._1
             Paix_MotionController.NMC2.nmc_SuddenStop(devID2, Raxis);
             Paix_MotionController.NMC2.nmc_SuddenStop(devID2, R2axis);
             await Task.Run(() => Task.Delay(1000).Wait());
-            Paix_MotionController.NMC2.nmc_JogMove(devID2, Raxis, CW);
-            Paix_MotionController.NMC2.nmc_JogMove(devID2, R2axis, CW);
+            //Paix_MotionController.NMC2.nmc_JogMove(devID2, Raxis, CW);
+            //Paix_MotionController.NMC2.nmc_JogMove(devID2, R2axis, CW);
             await Task.Run(() => Task.Delay(2500).Wait());
             Paix_MotionController.NMC2.nmc_SuddenStop(devID2, Raxis);
             Paix_MotionController.NMC2.nmc_SuddenStop(devID2, R2axis);
@@ -2524,7 +2525,8 @@ namespace BinderJetMotionControllerVer._1
 
         private async Task Powder_Supply(int Hopper_Open_interval, double Supply_Pos, double Ready_Pos)
         {
-            //Console.WriteLine("Hopper Sequence IN");
+            
+            Console.WriteLine("Hopper Sequence IN");
             await AxisMovement_async(X2axis, 44);
             Paix_MotionController.NMC2.nmc_GetMDIOInPin(devID, 4, out PowderIO);
             Console.WriteLine(PowderIO.ToString());
@@ -2546,7 +2548,46 @@ namespace BinderJetMotionControllerVer._1
 
 
         }
-        
+        private async Task Head_cleaning2()
+        {
+            await AxisMovement_async(Xaxis, 90);
+            await AxisMovement_async(Yaxis, 240);
+            Console.WriteLine("In cleaning2");
+            await Task.Delay(1000);
+            await AxisMovement_async(Xaxis, 0);
+
+            //퍼지 위치로 이동
+            await Task.Delay(500);
+
+            Printhead.cleanstart1();
+            await Task.Delay(500);
+            Printhead.cleanstart2();
+            await Task.Delay(500);
+            Printhead.cleanstop();
+            //퍼지 완료
+
+            //펌프 온
+            Outpin(6, ON);
+            await Task.Delay(1000);
+            PaixMotion.SetSCurveSpeed(Yaxis, iStartSpeed, iAccelSpeed, iDeccelSpeed, 10);
+            await Task.Delay(500);
+            await AxisMovement_async(Yaxis, 100);
+            Outpin(6,OFF);
+            //펌프 오프
+
+            //에어 온
+            Outpin(5, ON);
+            PaixMotion.SetSCurveSpeed(Yaxis, iStartSpeed, iAccelSpeed, iDeccelSpeed, 5);
+            await Task.Delay(500);
+            await AxisMovement_async(Yaxis, -40);
+            Outpin(5, OFF);
+            PaixMotion.SetSCurveSpeed(Yaxis, iStartSpeed, iAccelSpeed, iDeccelSpeed, 20);
+            await Task.Delay(500);
+            AxisMovement_async(Xaxis, 90);
+            await AxisMovement_async(Yaxis, 55);
+            
+
+        }
         private async Task Head_Cleaning(double Xstart, double Xend, double Ystart, double Yend, double Yend2, double Yspeed, double Yspeed2)
         {
             /*
@@ -2800,7 +2841,7 @@ namespace BinderJetMotionControllerVer._1
 
             //빌드 관련 변수
             double Layer_thickness = Convert.ToDouble(txtlayerthickness.Text) / 1000;//레이어 두께
-            int Hopper_Open_interval = 160;//Hopper 오픈 시간 (ms)
+            int Hopper_Open_interval = 300;//Hopper 오픈 시간 (ms)
             byte[] Binder_Value = { Convert.ToByte(txtb6.Text), Convert.ToByte(txtb5.Text), Convert.ToByte(txtb4.Text), Convert.ToByte(txtb3.Text), Convert.ToByte(txtb2.Text), Convert.ToByte(txtb1.Text), 0, 0 };
 
             //리코팅 관련 변수
@@ -2817,8 +2858,8 @@ namespace BinderJetMotionControllerVer._1
             double step_rspeed = Convert.ToDouble(txtstepper.Text);//파우더 공급시 스텝모터 회전속도
 
             //출력 관련 변수
-            double Xaxis_pspeed = 200;//헤드 출력시 X축 speed
-            double Xaxis_rspeed = 200;//헤드 복귀시 X축 speed
+            double Xaxis_pspeed = 300;//헤드 출력시 X축 speed
+            double Xaxis_rspeed = 300;//헤드 복귀시 X축 speed
             double Yaxis_speed = 100; //Y축 이동 속도
 
             short Dwell_time = Convert.ToInt16(txtdwelltime.Text);//프린팅 사이 대기 시간 (초)
@@ -2871,6 +2912,7 @@ namespace BinderJetMotionControllerVer._1
             printprogress.Minimum = 0;
             printprogress.Maximum = JobLayer;
             printprogress.Step = 1;
+            printprogress.Value = 0;
             printprogress.Visible = true;
 
 
@@ -2885,8 +2927,18 @@ namespace BinderJetMotionControllerVer._1
             AxisMovement(Xaxis, Xaxis_ready_pos);
             AxisMovement(Yaxis, Yaxis_single_lane_pos);
             AxisMovement(X2axis, X2axis_ready_pos);
+
+            if (head_onv==true)
+            {
+                head_onv = false;
+            }    
+            
+
+
             var pss = Task.Run(() => Powder_Supply(Hopper_Open_interval, X2axis_hopper_pos, X2axis_ready_pos));
-            var hcc = Task.Run(() => Head_Cleaning(Xaxis_Cleaning_pos, Xaxis_ready_pos, Yaxis_Cleaning_start_pos, Yaxis_Cleaning_end_pos, Yaxis_single_lane_pos, Yaxis_Cleaning_speed, Yaxis_speed));
+            var hcc = Task.Run(() => Head_cleaning2());
+
+            //var hcc = Task.Run(() => Head_Cleaning(Xaxis_Cleaning_pos, Xaxis_ready_pos, Yaxis_Cleaning_start_pos, Yaxis_Cleaning_end_pos, Yaxis_single_lane_pos, Yaxis_Cleaning_speed, Yaxis_speed));
 
 
             while (Currentlayer <= JobLayer && PrintEnable == true)
@@ -2911,7 +2963,6 @@ namespace BinderJetMotionControllerVer._1
                     updateCmdEnc();
                     while (NmcData.nBusy[Yaxis] == 1) { Application.DoEvents(); updateCmdEnc(); if (PrintEnable == false) return; }
 
-                    Printhead.Disconnect();
                     break;
                 }
                 switch (Printing_Sequence)
@@ -2920,6 +2971,7 @@ namespace BinderJetMotionControllerVer._1
                         txtNowLayer.Text = (Currentlayer + 1).ToString();
                         if (Currentlayer == 0)
                         {
+                            layertimes.Clear();
                             layertimes.Add(DateTime.Now);
                             processstring = Convert.ToString(DateTime.Now) + "___[ " + Convert.ToString(Currentlayer + 1) + " / " + Convert.ToString(JobLayer) + " ] 출력 작업 중";
                         }
@@ -3382,7 +3434,8 @@ namespace BinderJetMotionControllerVer._1
 
                         if (Currentlayer % 4 == 0 || Currentlayer == JobLayer)
                         {
-                            hcc = Task.Run(() => Head_Cleaning(Xaxis_Cleaning_pos, Xaxis_ready_pos, Yaxis_Cleaning_start_pos, Yaxis_Cleaning_end_pos, Yaxis_single_lane_pos, Yaxis_Cleaning_speed, Yaxis_speed));
+                            hcc = Task.Run(() => Head_cleaning2());
+                            //hcc = Task.Run(() => Head_Cleaning(Xaxis_Cleaning_pos, Xaxis_ready_pos, Yaxis_Cleaning_start_pos, Yaxis_Cleaning_end_pos, Yaxis_single_lane_pos, Yaxis_Cleaning_speed, Yaxis_speed));
                             await dwell;
                         }
                         else
@@ -3402,6 +3455,22 @@ namespace BinderJetMotionControllerVer._1
             percentprogress.Text = Convert.ToString(100) + "%";
             processstring = Convert.ToString(DateTime.Now) + "___프린팅 완료";
             processbox.Items.Insert(0, processstring);
+            await hcc;
+            head_onv = true;
+            byte[] end_Value = { 7, 7, 7, 7, 7, 7, 7, 0 };
+            Printhead.SetPaletteTable(end_Value);
+            processstring = Convert.ToString(DateTime.Now) + "프린트헤드 정기 퍼지 수행 시작";
+            processbox.Items.Insert(0, processstring);
+            while (head_onv == true)
+            {
+                Logger.WriteButtonLog("Printhead Clean", logButtonPath);
+                processstring = Convert.ToString(DateTime.Now) + "프린트헤드 자동 퍼지 수행";
+                processbox.Items.Insert(0, processstring);
+                hcc = Task.Run(() => Head_cleaning2());
+                //hcc = Task.Run(() => Head_Cleaning(0, 90, 245, 45, 100, 8, 50));
+                await hcc;
+                await Task.Run(() => Task.Delay(3600 * 1000).Wait());
+            }
 
         }
 
@@ -3409,15 +3478,18 @@ namespace BinderJetMotionControllerVer._1
         private async void headcleaning_Click(object sender, EventArgs e)
         {
             Logger.WriteButtonLog("Printhead Clean", logButtonPath);
-            var hcc = Task.Run(() => Head_Cleaning(0, 90, 245, 45, 100, 8, 50));
+
+            //var hcc = Task.Run(() => Head_Cleaning(0, 90, 245, 45, 100, 8, 50));
+            var hcc = Task.Run(() => Head_cleaning2());
             await hcc;
+
         }
 
         private async void suplp_Click(object sender, EventArgs e)
         {
             Logger.WriteButtonLog("Powder_Supply", logButtonPath);
 
-            var pss = Task.Run(() => Powder_Supply(Convert.ToInt16(txtShutterOpenTime.Text), 0, 44));
+            var pss = Task.Run(() => Powder_Supply(Convert.ToInt32(txtShutterOpenTime.Text), 0, 44));
             await pss;
         }
 
@@ -3831,13 +3903,15 @@ namespace BinderJetMotionControllerVer._1
             }
         }
 
-        private void btnFloop_Click(object sender, EventArgs e)
+        private async void btnFloop_Click(object sender, EventArgs e)
         {
             Logger.WriteButtonLog("F loop button pressed with loop : "+Convert.ToString(txtFloop.Text), logButtonPath);
             for (int i = 0; i < Convert.ToInt32(txtFloop.Text); i++)
             {
                 string processstring = Convert.ToString(DateTime.Now) + "___프린팅 전 파우더 채우기 작업 중 (" + Convert.ToString(i + 1) + " / " + txtFloop.Text + ")";
                 processbox.Items.Insert(0, processstring);
+                var pss = Task.Run(() => Powder_Supply(Convert.ToInt32(txtShutterOpenTime.Text), 0, 44));
+                await pss;
                 double step_rspeed = Convert.ToDouble(txtstepper.Text);
                 double recoating_speed = Convert.ToDouble(txtrspeed.Text);
                 byte[] bldcbytecode = Bldc_byteget(Convert.ToInt32(txtroller.Text));
@@ -3853,6 +3927,9 @@ namespace BinderJetMotionControllerVer._1
                 AxisMovement(X2axis, 300);                                //리코터 베드 roller out MIN 방향으로 이동
                 PaixMotion.SetSCurveSpeed(X2axis, iStartSpeed, 100, 100, 100);//X2축 이동 속도를 복귀 속도로 변경
                 Thread.Sleep(100);
+                Paix_MotionController.NMC2.nmc_SetMDIOOutPin(devID, 1, 1);// (IO OUT 1번 상태를 1로 바꿈) - Shutter Send
+                Thread.Sleep(100);
+                Paix_MotionController.NMC2.nmc_SetMDIOOutPin(devID, 1, 0);// (IO OUT 1번 상태를 0로 바꿈) - Shutter Send End
 
             }
             string Aprocessstring = Convert.ToString(DateTime.Now) + "___프린팅 전 파우더 채우기 작업 완료";
@@ -4307,7 +4384,8 @@ namespace BinderJetMotionControllerVer._1
                 Logger.WriteButtonLog("Printhead Clean", logButtonPath);
                 processstring = Convert.ToString(DateTime.Now) + "프린트헤드 자동 퍼지 수행";
                 processbox.Items.Insert(0, processstring);
-                var hcc = Task.Run(() => Head_Cleaning(0, 90, 245, 45, 100, 8, 50));
+                var hcc = Task.Run(() => Head_cleaning2());
+                //var hcc = Task.Run(() => Head_Cleaning(0, 90, 245, 45, 100, 8, 50));
                 await hcc;
                 await Task.Run(() => Task.Delay(1800 * 1000).Wait());
             }
@@ -4318,6 +4396,26 @@ namespace BinderJetMotionControllerVer._1
             string processstring = Convert.ToString(DateTime.Now) + "프린트헤드 정기 퍼지 수행 종료";
             processbox.Items.Insert(0, processstring);
             head_onv = false;
+        }
+
+        private void button7_Click(object sender, EventArgs e)
+        {
+            Outpin(5, ON);
+        }
+
+        private void button8_Click(object sender, EventArgs e)
+        {
+            Outpin(5, OFF);
+        }
+
+        private void button9_Click(object sender, EventArgs e)
+        {
+            Outpin(6, ON);
+        }
+
+        private void button10_Click(object sender, EventArgs e)
+        {
+            Outpin(6, OFF);
         }
     }
 }

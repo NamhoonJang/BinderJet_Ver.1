@@ -42,7 +42,7 @@ namespace XAARWinform
         static private int _phIndex = 0;
         static private bool _useExtPd = true;
         static private bool _useExtEnc = true;
-        private int _swPdCounts = 5;
+        private int _swPdCounts = 1;
         private int _swPdInterval = 2000;
         private List<string> _imageTags;
 

@@ -303,6 +303,10 @@ namespace BinderJetMotionControllerVer._1
             this.button6 = new System.Windows.Forms.Button();
             this.Head_on = new System.Windows.Forms.Button();
             this.Head_off = new System.Windows.Forms.Button();
+            this.button7 = new System.Windows.Forms.Button();
+            this.button8 = new System.Windows.Forms.Button();
+            this.button9 = new System.Windows.Forms.Button();
+            this.button10 = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.imagebox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.imgtrackbar)).BeginInit();
             this.panel1.SuspendLayout();
@@ -4212,6 +4216,50 @@ namespace BinderJetMotionControllerVer._1
             this.Head_off.UseVisualStyleBackColor = false;
             this.Head_off.Click += new System.EventHandler(this.Head_off_Click);
             // 
+            // button7
+            // 
+            this.button7.Location = new System.Drawing.Point(639, 580);
+            this.button7.Name = "button7";
+            this.button7.Size = new System.Drawing.Size(89, 20);
+            this.button7.TabIndex = 449;
+            this.button7.Text = "button7";
+            this.button7.UseVisualStyleBackColor = true;
+            this.button7.Visible = false;
+            this.button7.Click += new System.EventHandler(this.button7_Click);
+            // 
+            // button8
+            // 
+            this.button8.Location = new System.Drawing.Point(729, 580);
+            this.button8.Name = "button8";
+            this.button8.Size = new System.Drawing.Size(89, 20);
+            this.button8.TabIndex = 450;
+            this.button8.Text = "button8";
+            this.button8.UseVisualStyleBackColor = true;
+            this.button8.Visible = false;
+            this.button8.Click += new System.EventHandler(this.button8_Click);
+            // 
+            // button9
+            // 
+            this.button9.Location = new System.Drawing.Point(639, 606);
+            this.button9.Name = "button9";
+            this.button9.Size = new System.Drawing.Size(89, 21);
+            this.button9.TabIndex = 452;
+            this.button9.Text = "button9";
+            this.button9.UseVisualStyleBackColor = true;
+            this.button9.Visible = false;
+            this.button9.Click += new System.EventHandler(this.button9_Click);
+            // 
+            // button10
+            // 
+            this.button10.Location = new System.Drawing.Point(729, 606);
+            this.button10.Name = "button10";
+            this.button10.Size = new System.Drawing.Size(89, 20);
+            this.button10.TabIndex = 451;
+            this.button10.Text = "button10";
+            this.button10.UseVisualStyleBackColor = true;
+            this.button10.Visible = false;
+            this.button10.Click += new System.EventHandler(this.button10_Click);
+            // 
             // MotionController
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
@@ -4220,6 +4268,10 @@ namespace BinderJetMotionControllerVer._1
             this.AutoScrollMinSize = new System.Drawing.Size(200, 200);
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(44)))), ((int)(((byte)(52)))));
             this.ClientSize = new System.Drawing.Size(1254, 642);
+            this.Controls.Add(this.button9);
+            this.Controls.Add(this.button10);
+            this.Controls.Add(this.button8);
+            this.Controls.Add(this.button7);
             this.Controls.Add(this.Head_off);
             this.Controls.Add(this.Head_on);
             this.Controls.Add(this.button6);
@@ -4770,6 +4822,10 @@ namespace BinderJetMotionControllerVer._1
         private System.Windows.Forms.Button button6;
         private System.Windows.Forms.Button Head_on;
         private System.Windows.Forms.Button Head_off;
+        private System.Windows.Forms.Button button7;
+        private System.Windows.Forms.Button button8;
+        private System.Windows.Forms.Button button9;
+        private System.Windows.Forms.Button button10;
     }
 }
 

@@ -3733,10 +3733,11 @@ namespace BinderJetMotionControllerVer._1
             btnrollerstart.Enabled = true;
 
             //MaxonMotorClass added
-            
+
             MaxBLDC.Connect();
             MaxBLDC.Enable();
-            
+            MaxBLDC.MotorMove_CW_CCW(Convert.ToInt32(txtmaxonrpm.Text), 10000, 10000, true);
+
         }
 
         private void btnrollerstop_Click(object sender, EventArgs e)

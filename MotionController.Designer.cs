@@ -307,6 +307,7 @@ namespace BinderJetMotionControllerVer._1
             this.button8 = new System.Windows.Forms.Button();
             this.button9 = new System.Windows.Forms.Button();
             this.button10 = new System.Windows.Forms.Button();
+            this.txtmaxonrpm = new System.Windows.Forms.TextBox();
             ((System.ComponentModel.ISupportInitialize)(this.imagebox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.imgtrackbar)).BeginInit();
             this.panel1.SuspendLayout();
@@ -4260,6 +4261,21 @@ namespace BinderJetMotionControllerVer._1
             this.button10.Visible = false;
             this.button10.Click += new System.EventHandler(this.button10_Click);
             // 
+            // txtmaxonrpm
+            // 
+            this.txtmaxonrpm.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(83)))), ((int)(((byte)(87)))), ((int)(((byte)(83)))));
+            this.txtmaxonrpm.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.txtmaxonrpm.Font = new System.Drawing.Font("Lucida Console", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtmaxonrpm.ForeColor = System.Drawing.Color.Orange;
+            this.txtmaxonrpm.Location = new System.Drawing.Point(38, 589);
+            this.txtmaxonrpm.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            this.txtmaxonrpm.MaxLength = 6;
+            this.txtmaxonrpm.Name = "txtmaxonrpm";
+            this.txtmaxonrpm.Size = new System.Drawing.Size(75, 22);
+            this.txtmaxonrpm.TabIndex = 380;
+            this.txtmaxonrpm.Text = "300";
+            this.txtmaxonrpm.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
             // MotionController
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
@@ -4339,6 +4355,7 @@ namespace BinderJetMotionControllerVer._1
             this.Controls.Add(this.txtrollertime);
             this.Controls.Add(this.txtsteptime);
             this.Controls.Add(this.btnrollerstop);
+            this.Controls.Add(this.txtmaxonrpm);
             this.Controls.Add(this.txtrollerspeed);
             this.Controls.Add(this.btnstepstop);
             this.Controls.Add(this.btnrollerstart);
@@ -4826,6 +4843,7 @@ namespace BinderJetMotionControllerVer._1
         private System.Windows.Forms.Button button8;
         private System.Windows.Forms.Button button9;
         private System.Windows.Forms.Button button10;
+        private System.Windows.Forms.TextBox txtmaxonrpm;
     }
 }
 

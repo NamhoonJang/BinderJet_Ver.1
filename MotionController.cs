@@ -9,6 +9,8 @@ using System.Windows.Forms;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using EposCmd.Net;
+using EposCmd.Net.DeviceCmdSet.Operation;
 
 
 namespace BinderJetMotionControllerVer._1
@@ -46,7 +48,7 @@ namespace BinderJetMotionControllerVer._1
         private SerialPort Serial_RS485 = new SerialPort();
         public ArrayList arrSerialbuff = new ArrayList();
         XAARWinform.PrintheadCon Printhead = new XAARWinform.PrintheadCon();
-
+        
 
 
         // private int Ping = 0;
@@ -171,7 +173,11 @@ namespace BinderJetMotionControllerVer._1
         private bool rzmove;
         private bool head_onv=true;
 
-
+        //Maxon Motor related
+        private DeviceManager _connector;
+        private Device _epos;
+        StateMachine sm;
+        Maxon MaxBLDC = new Maxon();
 
         public MotionController()
         {
@@ -180,6 +186,7 @@ namespace BinderJetMotionControllerVer._1
             TdWatchSensor = new Thread(new ThreadStart(watchSensor));
             UpdateLogger = new Thread(new ThreadStart(watchLogger));
             if (!di.Exists) Directory.CreateDirectory(dirPath);
+            
         }
 
         private void btnOpen_Click(object sender, EventArgs e)
@@ -3724,6 +3731,12 @@ namespace BinderJetMotionControllerVer._1
             await roller_on(bldcbytecode, dur);
             btnrollerstart.BackColor = SystemColors.ControlDarkDark;
             btnrollerstart.Enabled = true;
+
+            //MaxonMotorClass added
+            /*
+            MaxBLDC.Connect();
+            MaxBLDC.Enable();
+            */
         }
 
         private void btnrollerstop_Click(object sender, EventArgs e)
@@ -3732,6 +3745,13 @@ namespace BinderJetMotionControllerVer._1
             BLDC_STOP_1();
             string processstring = Convert.ToString(DateTime.Now) + "___평탄화 롤러 가동 중단";
             processbox.Items.Insert(0, processstring);
+
+            //MaxonMotorClass Added
+            /*
+            MaxBLDC.MotorStop();
+            MaxBLDC.Disable();
+            MaxBLDC.Disconnect();
+            */
         }
 
         private async void btnstepjog_MouseDown(object sender, MouseEventArgs e)
@@ -3762,6 +3782,12 @@ namespace BinderJetMotionControllerVer._1
             string processstring = Convert.ToString(DateTime.Now) + "___롤러 조그 컨트롤 시작";
             processbox.Items.Insert(0, processstring);
             roller_on(bldcbytecode, 0);
+            
+            //MaxonMotor Added.
+            /*
+            // if true, CW & if false, CCW
+            MaxBLDC.MotorMove_CW_CCW(Convert.ToInt32(txtrollerspeed.Text), 100, 100, true);
+            */
         }
 
         private void btnrollerjog_MouseUp(object sender, MouseEventArgs e)
@@ -3771,6 +3797,11 @@ namespace BinderJetMotionControllerVer._1
             string processstring = Convert.ToString(DateTime.Now) + "___롤러 조그 컨트롤 종료";
             processbox.Items.Insert(0, processstring);
             btnrollerjog.BackColor = SystemColors.ControlDarkDark;
+
+            //MaxonMotor Added.
+            /*
+            MaxBLDC.MotorStop();
+            */
         }
 
         private void PowderChk_CheckStateChanged(object sender, EventArgs e)

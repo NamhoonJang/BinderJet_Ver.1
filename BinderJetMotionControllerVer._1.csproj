@@ -56,6 +56,10 @@
     <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="EposCmd.Net, Version=6.7.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>bin\Debug\EposCmd.Net.dll</HintPath>
+    </Reference>
     <Reference Include="MetroFramework, Version=1.4.0.0, Culture=neutral, PublicKeyToken=5f91a84759bf584a, processorArchitecture=MSIL">
       <HintPath>packages\MetroModernUI.1.4.0.0\lib\net\MetroFramework.dll</HintPath>
     </Reference>
@@ -103,6 +107,7 @@
   <ItemGroup>
     <Compile Include="ExamplesUtilities.cs" />
     <Compile Include="Logger.cs" />
+    <Compile Include="Maxon.cs" />
     <Compile Include="MotionController.cs">
       <SubType>Form</SubType>
     </Compile>

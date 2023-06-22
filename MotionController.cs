@@ -3733,10 +3733,10 @@ namespace BinderJetMotionControllerVer._1
             btnrollerstart.Enabled = true;
 
             //MaxonMotorClass added
-            /*
+            
             MaxBLDC.Connect();
             MaxBLDC.Enable();
-            */
+            
         }
 
         private void btnrollerstop_Click(object sender, EventArgs e)
@@ -3747,11 +3747,11 @@ namespace BinderJetMotionControllerVer._1
             processbox.Items.Insert(0, processstring);
 
             //MaxonMotorClass Added
-            /*
+            
             MaxBLDC.MotorStop();
             MaxBLDC.Disable();
             MaxBLDC.Disconnect();
-            */
+            
         }
 
         private async void btnstepjog_MouseDown(object sender, MouseEventArgs e)
@@ -3784,10 +3784,10 @@ namespace BinderJetMotionControllerVer._1
             roller_on(bldcbytecode, 0);
             
             //MaxonMotor Added.
-            /*
+            
             // if true, CW & if false, CCW
-            MaxBLDC.MotorMove_CW_CCW(Convert.ToInt32(txtrollerspeed.Text), 100, 100, true);
-            */
+            MaxBLDC.MotorMove_CW_CCW(Convert.ToInt32(txtrollerspeed.Text), 10000, 10000, true);
+            
         }
 
         private void btnrollerjog_MouseUp(object sender, MouseEventArgs e)
@@ -3799,9 +3799,9 @@ namespace BinderJetMotionControllerVer._1
             btnrollerjog.BackColor = SystemColors.ControlDarkDark;
 
             //MaxonMotor Added.
-            /*
+            
             MaxBLDC.MotorStop();
-            */
+            
         }
 
         private void PowderChk_CheckStateChanged(object sender, EventArgs e)

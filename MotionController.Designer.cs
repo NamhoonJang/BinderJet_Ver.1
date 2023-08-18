@@ -240,7 +240,6 @@ namespace BinderJetMotionControllerVer._1
             this.txtrollertime = new System.Windows.Forms.TextBox();
             this.txtsteptime = new System.Windows.Forms.TextBox();
             this.btnrollerstop = new System.Windows.Forms.Button();
-            this.txtrollerspeed = new System.Windows.Forms.TextBox();
             this.btnstepstop = new System.Windows.Forms.Button();
             this.btnrollerstart = new System.Windows.Forms.Button();
             this.txtstepspeed = new System.Windows.Forms.TextBox();
@@ -308,6 +307,7 @@ namespace BinderJetMotionControllerVer._1
             this.button9 = new System.Windows.Forms.Button();
             this.button10 = new System.Windows.Forms.Button();
             this.txtmaxonrpm = new System.Windows.Forms.TextBox();
+            this.txtrollerspeed = new System.Windows.Forms.TextBox();
             ((System.ComponentModel.ISupportInitialize)(this.imagebox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.imgtrackbar)).BeginInit();
             this.panel1.SuspendLayout();
@@ -3297,21 +3297,6 @@ namespace BinderJetMotionControllerVer._1
             this.btnrollerstop.UseVisualStyleBackColor = false;
             this.btnrollerstop.Click += new System.EventHandler(this.btnrollerstop_Click);
             // 
-            // txtrollerspeed
-            // 
-            this.txtrollerspeed.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(83)))), ((int)(((byte)(87)))), ((int)(((byte)(83)))));
-            this.txtrollerspeed.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.txtrollerspeed.Font = new System.Drawing.Font("Lucida Console", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtrollerspeed.ForeColor = System.Drawing.Color.Orange;
-            this.txtrollerspeed.Location = new System.Drawing.Point(89, 405);
-            this.txtrollerspeed.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.txtrollerspeed.MaxLength = 6;
-            this.txtrollerspeed.Name = "txtrollerspeed";
-            this.txtrollerspeed.Size = new System.Drawing.Size(75, 22);
-            this.txtrollerspeed.TabIndex = 380;
-            this.txtrollerspeed.Text = "300";
-            this.txtrollerspeed.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
             // btnstepstop
             // 
             this.btnstepstop.BackColor = System.Drawing.SystemColors.ControlDarkDark;
@@ -3481,7 +3466,7 @@ namespace BinderJetMotionControllerVer._1
             this.txtShutterOpenTime.Name = "txtShutterOpenTime";
             this.txtShutterOpenTime.Size = new System.Drawing.Size(151, 22);
             this.txtShutterOpenTime.TabIndex = 371;
-            this.txtShutterOpenTime.Text = "220";
+            this.txtShutterOpenTime.Text = "300";
             this.txtShutterOpenTime.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // btnShutter
@@ -3845,7 +3830,7 @@ namespace BinderJetMotionControllerVer._1
             this.txtroller.Name = "txtroller";
             this.txtroller.Size = new System.Drawing.Size(76, 22);
             this.txtroller.TabIndex = 418;
-            this.txtroller.Text = "300";
+            this.txtroller.Text = "20";
             // 
             // label29
             // 
@@ -4225,7 +4210,6 @@ namespace BinderJetMotionControllerVer._1
             this.button7.TabIndex = 449;
             this.button7.Text = "button7";
             this.button7.UseVisualStyleBackColor = true;
-            this.button7.Visible = false;
             this.button7.Click += new System.EventHandler(this.button7_Click);
             // 
             // button8
@@ -4236,7 +4220,6 @@ namespace BinderJetMotionControllerVer._1
             this.button8.TabIndex = 450;
             this.button8.Text = "button8";
             this.button8.UseVisualStyleBackColor = true;
-            this.button8.Visible = false;
             this.button8.Click += new System.EventHandler(this.button8_Click);
             // 
             // button9
@@ -4247,7 +4230,6 @@ namespace BinderJetMotionControllerVer._1
             this.button9.TabIndex = 452;
             this.button9.Text = "button9";
             this.button9.UseVisualStyleBackColor = true;
-            this.button9.Visible = false;
             this.button9.Click += new System.EventHandler(this.button9_Click);
             // 
             // button10
@@ -4258,7 +4240,6 @@ namespace BinderJetMotionControllerVer._1
             this.button10.TabIndex = 451;
             this.button10.Text = "button10";
             this.button10.UseVisualStyleBackColor = true;
-            this.button10.Visible = false;
             this.button10.Click += new System.EventHandler(this.button10_Click);
             // 
             // txtmaxonrpm
@@ -4267,14 +4248,29 @@ namespace BinderJetMotionControllerVer._1
             this.txtmaxonrpm.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.txtmaxonrpm.Font = new System.Drawing.Font("Lucida Console", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtmaxonrpm.ForeColor = System.Drawing.Color.Orange;
-            this.txtmaxonrpm.Location = new System.Drawing.Point(38, 589);
+            this.txtmaxonrpm.Location = new System.Drawing.Point(89, 405);
             this.txtmaxonrpm.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.txtmaxonrpm.MaxLength = 6;
             this.txtmaxonrpm.Name = "txtmaxonrpm";
             this.txtmaxonrpm.Size = new System.Drawing.Size(75, 22);
             this.txtmaxonrpm.TabIndex = 380;
-            this.txtmaxonrpm.Text = "300";
+            this.txtmaxonrpm.Text = "20";
             this.txtmaxonrpm.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
+            // txtrollerspeed
+            // 
+            this.txtrollerspeed.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(83)))), ((int)(((byte)(87)))), ((int)(((byte)(83)))));
+            this.txtrollerspeed.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.txtrollerspeed.Font = new System.Drawing.Font("Lucida Console", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtrollerspeed.ForeColor = System.Drawing.Color.Orange;
+            this.txtrollerspeed.Location = new System.Drawing.Point(32, 584);
+            this.txtrollerspeed.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            this.txtrollerspeed.MaxLength = 6;
+            this.txtrollerspeed.Name = "txtrollerspeed";
+            this.txtrollerspeed.Size = new System.Drawing.Size(75, 22);
+            this.txtrollerspeed.TabIndex = 380;
+            this.txtrollerspeed.Text = "20";
+            this.txtrollerspeed.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // MotionController
             // 
@@ -4760,7 +4756,6 @@ namespace BinderJetMotionControllerVer._1
         private System.Windows.Forms.TextBox txtrollertime;
         private System.Windows.Forms.TextBox txtsteptime;
         private System.Windows.Forms.Button btnrollerstop;
-        private System.Windows.Forms.TextBox txtrollerspeed;
         private System.Windows.Forms.Button btnstepstop;
         private System.Windows.Forms.Button btnrollerstart;
         private System.Windows.Forms.TextBox txtstepspeed;
@@ -4844,6 +4839,7 @@ namespace BinderJetMotionControllerVer._1
         private System.Windows.Forms.Button button9;
         private System.Windows.Forms.Button button10;
         private System.Windows.Forms.TextBox txtmaxonrpm;
+        private System.Windows.Forms.TextBox txtrollerspeed;
     }
 }
 

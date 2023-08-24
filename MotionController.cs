@@ -1916,6 +1916,7 @@ namespace BinderJetMotionControllerVer._1
 
         private void BLDC_STOP_0()
         {
+            //이전에 사용하였으나 현재 사용하지 않음.
             byte[] Packet_OFF =
             {
                 0xFF, 0xFE, 0x00, 0x03, 0xEF, 0x0C, 0x01
@@ -1930,6 +1931,7 @@ namespace BinderJetMotionControllerVer._1
 
         private void BLDC_STOP_1()
         {
+            //이전에 사용하였으나 현재 사용하지 않음.
             byte[] Packet_OFF =
             {
                 0xFF, 0xFE, 0x01, 0x03, 0xEE, 0x0C, 0x01
@@ -1944,6 +1946,7 @@ namespace BinderJetMotionControllerVer._1
         }
         private void BLDC_STOP_2()
         {
+            //이전에 사용하였으나 현재 사용하지 않음.
             byte[] Packet_OFF =
             {
                 0xFF, 0xFE, 0x02, 0x03, 0xED, 0x0C, 0x01
@@ -1958,6 +1961,7 @@ namespace BinderJetMotionControllerVer._1
 
         private void btnBLDCRun_Click(object sender, EventArgs e)
         {
+            //이전에 사용하였으나 현재 사용하지 않음.
             //BLDC_RUN_0();
             //BLDC_RUN_1_rev();
             //BLDC_RUN_2();
@@ -1965,6 +1969,7 @@ namespace BinderJetMotionControllerVer._1
 
         private void btnBLDCStop_Click(object sender, EventArgs e)
         {
+            //이전에 사용하였으나 현재 사용하지 않음.
             //BLDC_STOP_0();
             //BLDC_STOP_1();
             //BLDC_STOP_2();
@@ -2024,6 +2029,7 @@ namespace BinderJetMotionControllerVer._1
 
         private async void btnTestWhile_Click(object sender, EventArgs e)
         {
+            //이전에 사용하였으나 현재 사용하지 않음.
             PrintEnable = true;
             //프린팅 시퀸스 추가 변수 선언부
 
@@ -2070,7 +2076,7 @@ namespace BinderJetMotionControllerVer._1
             double Yaxis_Cleaning_speed = 8;
 
             byte[] bldcbytecode = Bldc_byteget(Convert.ToInt32(txtroller.Text));//{ 0xFF, 0xFE, 0x01, 0x06, 0x1E, 0x03, 0x00, 0x0B, 0xB8, 0x14 };
-
+            //레거시 코드이나 문제 있을수 있어 유지
 
 
             //프린팅 시퀀스 여기서부터 시작
@@ -2428,6 +2434,7 @@ namespace BinderJetMotionControllerVer._1
 
         private void LoadParameter_Click(object sender, EventArgs e)
         {
+            //파라미터 로드 기능
             Logger.WriteButtonLog("Load Parameter", logButtonPath);
             string OpenFilePath = System.Environment.CurrentDirectory;
 
@@ -2439,6 +2446,8 @@ namespace BinderJetMotionControllerVer._1
             ParameterDialog.FileName = "";
             DialogResult dr = ParameterDialog.ShowDialog();
             Dictionary<string, string> parameters = new Dictionary<string, string>();
+
+            //파라미터 복호화 기능
             /*
             Dictionary<char, char> codex = new Dictionary<char, char>
             {
@@ -2548,6 +2557,7 @@ namespace BinderJetMotionControllerVer._1
         }
         private async void Powder_Feed(double step_rspeed)
         {
+            //파우더 도포 (비동기 call 용)
             Paix_MotionController.NMC2.nmc_SetSCurveSpeed(devID2, Raxis, rStartSpeed, rAccelSpeed, rDeccelSpeed, step_rspeed * 12);
             Paix_MotionController.NMC2.nmc_SetSCurveSpeed(devID2, R2axis, rStartSpeed, rAccelSpeed, rDeccelSpeed, step_rspeed * 14);
             Paix_MotionController.NMC2.nmc_JogMove(devID2, Raxis, CCW);
@@ -2555,6 +2565,7 @@ namespace BinderJetMotionControllerVer._1
         }
         private async Task Powder_Draw(double step_wspeed)
         {
+            //파우더 도포 후 역회전 (비동기 call 용)
             Paix_MotionController.NMC2.nmc_SetSCurveSpeed(devID2, Raxis, rStartSpeed, rAccelSpeed, rDeccelSpeed, step_wspeed * 12);
             Paix_MotionController.NMC2.nmc_SetSCurveSpeed(devID2, R2axis, rStartSpeed, rAccelSpeed, rDeccelSpeed, step_wspeed * 14);
             Paix_MotionController.NMC2.nmc_SuddenStop(devID2, Raxis);
@@ -2569,71 +2580,73 @@ namespace BinderJetMotionControllerVer._1
 
         private async Task Powder_Supply(int Hopper_Open_interval, double Supply_Pos, double Ready_Pos)
         {
-            
+            //파우더 공급 (호퍼 -> 리코터), 비동기 call용
             Console.WriteLine("Hopper Sequence IN");
-            await AxisMovement_async(X2axis, 44);
-            Paix_MotionController.NMC2.nmc_GetMDIOInPin(devID, 4, out PowderIO);
+            await AxisMovement_async(X2axis, 44);//비동기 센서위치 이동
+            Paix_MotionController.NMC2.nmc_GetMDIOInPin(devID, 4, out PowderIO);//파우더 잔량 센서 값 확인
             Console.WriteLine(PowderIO.ToString());
-            while (PowderIO == 0)
+            while (PowderIO == 0)//파우더 잔량이 부족할 경우
             {
                 Console.WriteLine(PowderIO.ToString());
-                await AxisMovement_async(X2axis, Supply_Pos);
+                await AxisMovement_async(X2axis, Supply_Pos);//공급위치로 이동
                 Console.WriteLine("IN");
-                Thread.Sleep(1500);
-                var t1 = Task.Run(() => Powder_Draw(80));
+                Thread.Sleep(1500);//이동대기
+                var t1 = Task.Run(() => Powder_Draw(80));//파우더 역회전
                 Thread.Sleep(500);
-                ShutterOpen(Hopper_Open_interval);
+                ShutterOpen(Hopper_Open_interval);//셔터 오픈
                 Thread.Sleep(2000);
-                await AxisMovement_async(X2axis, Ready_Pos);
+                await AxisMovement_async(X2axis, Ready_Pos);//비동기 센서위치 이동
                 Thread.Sleep(1500);
                 //return new ind_powder_supply();
-                Paix_MotionController.NMC2.nmc_GetMDIOInPin(devID, 4, out PowderIO);
+                Paix_MotionController.NMC2.nmc_GetMDIOInPin(devID, 4, out PowderIO);//파우더 잔량 재 측정 (부족할경우 반복 진행)
             }
 
 
         }
         private async Task Head_cleaning2()
         {
-            await AxisMovement_async(Xaxis, 90);
-            await AxisMovement_async(Yaxis, 240);
+            //헤드 클리닝 (신모듈)
+            await AxisMovement_async(Xaxis, 90);//헤드 X 대기위치 이동
+            await AxisMovement_async(Yaxis, 240);//헤드 Y 클리닝 시작위치 이동
             Console.WriteLine("In cleaning2");
             await Task.Delay(1000);
-            await AxisMovement_async(Xaxis, 0);
+            await AxisMovement_async(Xaxis, 0);//헤드 X 클리닝 시작위치 이동
 
             //퍼지 위치로 이동
             await Task.Delay(500);
 
-            Printhead.cleanstart1();
+            Printhead.cleanstart1();//퍼지 설정
             await Task.Delay(500);
-            Printhead.cleanstart2();
+            Printhead.cleanstart2();//퍼지 수행
             await Task.Delay(500);
-            Printhead.cleanstop();
+            Printhead.cleanstop();//퍼지 종료
             //퍼지 완료
 
             //펌프 온
-            Outpin(6, ON);
+            Outpin(6, ON);//맥동펌프 ON
             await Task.Delay(1000);
-            PaixMotion.SetSCurveSpeed(Yaxis, iStartSpeed, iAccelSpeed, iDeccelSpeed, 10);
+            PaixMotion.SetSCurveSpeed(Yaxis, iStartSpeed, iAccelSpeed, iDeccelSpeed, 10);//헤드 이동을 위한 속도 부여
             await Task.Delay(500);
-            await AxisMovement_async(Yaxis, 100);
-            Outpin(6,OFF);
+            await AxisMovement_async(Yaxis, 100);//헤드 이동 진행
+            Outpin(6,OFF);//맥동펌프 OFF
             //펌프 오프
 
-            //에어 온
-            Outpin(5, ON);
-            PaixMotion.SetSCurveSpeed(Yaxis, iStartSpeed, iAccelSpeed, iDeccelSpeed, 5);
+            //에어 클리닝
+            Outpin(5, ON);//에어 ON
+            PaixMotion.SetSCurveSpeed(Yaxis, iStartSpeed, iAccelSpeed, iDeccelSpeed, 5);//헤드 이동을 위한 속도 재부여
             await Task.Delay(500);
-            await AxisMovement_async(Yaxis, -40);
-            Outpin(5, OFF);
-            PaixMotion.SetSCurveSpeed(Yaxis, iStartSpeed, iAccelSpeed, iDeccelSpeed, 20);
+            await AxisMovement_async(Yaxis, -40);//종료위치까지 헤드 이동
+            Outpin(5, OFF);//에어 OFF
+            PaixMotion.SetSCurveSpeed(Yaxis, iStartSpeed, iAccelSpeed, iDeccelSpeed, 20);//헤드 속도 복귀
             await Task.Delay(500);
-            AxisMovement_async(Xaxis, 90);
-            await AxisMovement_async(Yaxis, 55);
+            AxisMovement_async(Xaxis, 90);//헤드 준비위치 이동
+            await AxisMovement_async(Yaxis, 55);//헤드 준비위치 이동
             
 
         }
         private async Task Head_Cleaning(double Xstart, double Xend, double Ystart, double Yend, double Yend2, double Yspeed, double Yspeed2)
         {
+            //이전에 사용하던 헤드 클리닝 함수, 현재 사용하지 않음.
             /*
             await AxisMovement_async(Xaxis, Xend);
             await AxisMovement_async(Yaxis, Ystart);
@@ -2680,6 +2693,7 @@ namespace BinderJetMotionControllerVer._1
         }
         private void AxisMovement(short axis, double position)
         {
+            //축 이동용 함수
             if (axis == Zaxis)
             {
                 PaixMotion.RelMove(axis, position);
@@ -2701,6 +2715,7 @@ namespace BinderJetMotionControllerVer._1
         }
         private void Outpin(short pinid, short onoff)
         {
+            //IO out 제어용 함수
             Paix_MotionController.NMC2.nmc_SetMDIOOutPin(devID, pinid, onoff);
         }
         /*
@@ -2741,76 +2756,81 @@ namespace BinderJetMotionControllerVer._1
 
         private async Task BLDC_Stopper(short axis, double position, short SmallorBig)
         {
-            if (SmallorBig == small)
+            //비동기 stepper 모터 정지용 함수
+            if (SmallorBig == small)//작은 쪽으로 이동 할 때
             {
-                while (NmcData.dEnc[axis] > position + 1)
+                while (NmcData.dEnc[axis] > position + 1)//현재 포지션이 설정 포지션보다 큰 동안
                 {
-                    await Task.Run(() => Task.Delay(100).Wait());
+                    await Task.Run(() => Task.Delay(100).Wait());//0.1초단위로 축을 추적하다가
                 }
                 Paix_MotionController.NMC2.nmc_SuddenStop(devID2, Raxis);
                 Paix_MotionController.NMC2.nmc_SuddenStop(devID2, R2axis);
-                Powder_Draw(80);
+                //STEPPER 모터 정지 신호 발송
+                Powder_Draw(80);//파우더 역회전 진행
             }
-            else
+            else//큰 쪽으로 갈때
             {
-                while (NmcData.dEnc[axis] < position - 1)
+                while (NmcData.dEnc[axis] < position - 1)//현재 포지션이 설정 포지션보다 작은 동안
                 {
-                    await Task.Run(() => Task.Delay(100).Wait());
+                    await Task.Run(() => Task.Delay(100).Wait());//0.1초 단위로 축을 추적하다가
                 }
                 Paix_MotionController.NMC2.nmc_SuddenStop(devID2, Raxis);
                 Paix_MotionController.NMC2.nmc_SuddenStop(devID2, R2axis);
-                Powder_Draw(80);
+                //stepper 모터 정지 신호 발송
+                Powder_Draw(80);//파우더 역회전 진행
             }
         }
 
         private async Task roller_Starter(short axis, double position, short SmallorBig, int maxonrpm)
         {
-            if (SmallorBig == small)
+            //비동기로 롤러를 시작하기 위한 함수
+            if (SmallorBig == small)//작은 쪽으로 이동할때
             {
-                while (NmcData.dEnc[axis] > position)
+                while (NmcData.dEnc[axis] > position)//현재 포지션이 설정 포지션보다 큰 동안
                 {
-                    await Task.Run(() => Task.Delay(100).Wait());
+                    await Task.Run(() => Task.Delay(100).Wait());//0.1초 단위로 추적하다가
                     //Console.WriteLine(@NmcData.dEnc[axis]);
                 }
                 //BLDC_RUN_1_rev(bldcbytecode);
-                maxon_run(maxonrpm, false);
+                maxon_run(maxonrpm, false);//맥슨모터 가동
             }
-            else
+            else//큰 쪽으로 이동할때
             {
-                while (NmcData.dEnc[axis] < position)
+                while (NmcData.dEnc[axis] < position)//현재 포지션이 설정 포지션보다 작은 동안
                 {
-                    await Task.Run(() => Task.Delay(100).Wait());
+                    await Task.Run(() => Task.Delay(100).Wait());//0.1초 단위로 추적하다가
                 }
                 //BLDC_RUN_1_rev(bldcbytecode);
-                maxon_run(maxonrpm, false);
+                maxon_run(maxonrpm, false);//맥슨모터 가동
             }
         }
         private async Task roller_Stopper(short axis, double position, short SmallorBig)
         {
-            if (SmallorBig == small)
+            //비동기로 롤러를 정지하기 위한 함수
+            if (SmallorBig == small)//작은 쪽으로 이동할때
             {
-                while (NmcData.dEnc[axis] > position)
+                while (NmcData.dEnc[axis] > position)//현재 포지션이 설정 포지션보다 큰 동안
                 {
-                    await Task.Run(() => Task.Delay(100).Wait());
+                    await Task.Run(() => Task.Delay(100).Wait());//0.1초 단위로 추적하다가
                 }
                 //BLDC_STOP_1();
-                maxon_stop();
+                maxon_stop();//맥슨모터 정지
             }
-            else
+            else//큰 쪽으로 이동할때
             {
-                while (NmcData.dEnc[axis] < position)
+                while (NmcData.dEnc[axis] < position)//현재 포지션이 설정 포지션보다 작은 동안
                 {
-                    await Task.Run(() => Task.Delay(100).Wait());
+                    await Task.Run(() => Task.Delay(100).Wait());//0.1초 단위로 추적하다가
                 }
                 //BLDC_STOP_1();
-                maxon_stop();
+                maxon_stop();//맥슨모터 정지
             }
         }
         private async Task AxisMovement_async(short axis, double position)
         {
-
+            //비동기로 축을 이동하기 위한 함수 (절대좌표)
             short SmallorBig;
-            if (NmcData.dEnc[axis] >= position)
+            if (NmcData.dEnc[axis] >= position)//포지션을 판단하여 small 또는 big 부여
             {
                 SmallorBig = small;
             }
@@ -2820,10 +2840,10 @@ namespace BinderJetMotionControllerVer._1
             }
             //Console.WriteLine(SmallorBig);
             //Console.WriteLine(position);
-            if (SmallorBig == small)
+            if (SmallorBig == small)//작은 쪽으로 진행할때
             {
-                PaixMotion.AbsMove(axis, position);
-                while (NmcData.dEnc[axis] > position + 1)
+                PaixMotion.AbsMove(axis, position);//절대좌표 이동명령
+                while (NmcData.dEnc[axis] > position + 1)//이동 완료시까지 축 좌표 추적
                 {
                     //Console.WriteLine(@NmcData.dEnc[axis]);
                     Thread.Sleep(100);
@@ -2831,8 +2851,8 @@ namespace BinderJetMotionControllerVer._1
             }
             else
             {
-                PaixMotion.AbsMove(axis, position);
-                while (NmcData.dEnc[axis] < position - 1)
+                PaixMotion.AbsMove(axis, position);//절대좌표 이동명령
+                while (NmcData.dEnc[axis] < position - 1)//이동 완료시까지 축 좌표 추적
                 {
                     //Console.WriteLine(@NmcData.dEnc[axis]);
                     Thread.Sleep(100);
@@ -2843,12 +2863,14 @@ namespace BinderJetMotionControllerVer._1
 
         private async Task Templogging(int ln, double sn)
         {
-            Console.WriteLine(logtempPath);
-            Logger.WrtieTempLog(Convert.ToString(ln + sn) + "\t" + Convert.ToString(temp), logtempPath);
+            //온도 로깅 함수
+            Console.WriteLine(logtempPath);//저장 위치
+            Logger.WrtieTempLog(Convert.ToString(ln + sn) + "\t" + Convert.ToString(temp), logtempPath);//현재 레이어 + 세부레이어 + 탭 + 현재온도 저장
         }
 
         private async Task TempEmergency()
         {
+            //현재 사용하지 않음 (실용성 없음)
             while (true)
             {
                 if (NmcData.dEnc[Xaxis] < 100 || NmcData.dEnc[X2axis] < 50)
@@ -2981,13 +3003,13 @@ namespace BinderJetMotionControllerVer._1
             AxisMovement(Yaxis, Yaxis_single_lane_pos);
             AxisMovement(X2axis, X2axis_ready_pos);
 
-            if (head_onv==true)
+            if (head_onv==true)//헤드 클리닝 반복 관련 변수
             {
                 head_onv = false;
             }    
             
 
-
+            //파우더 공급 및 헤드 클리닝 비동기 실행
             var pss = Task.Run(() => Powder_Supply(Hopper_Open_interval, X2axis_hopper_pos, X2axis_ready_pos));
             var hcc = Task.Run(() => Head_cleaning2());
 
@@ -3104,14 +3126,15 @@ namespace BinderJetMotionControllerVer._1
                         Console.WriteLine(temp);
                         Console.WriteLine(templimit);
                         Console.WriteLine(temprange);
-                        if (temp < templimit-temprange/2)
+                        //온도 설정값, 여유값에 따른 베드 온도 컨트롤 기능
+                        if (temp < templimit-temprange/2)//온도가 낮을때 (일반적인 상황) - 히터 가열
                         {
                             AxisMovement(X2axis, X2axis_roller_min_pos - 50);
                             Outpin(0, TurnON);
                             await Task.Run(() => Task.Delay(IR_preheat_time * 1000).Wait());
                             PaixMotion.SetSCurveSpeed(X2axis, iStartSpeed, X2axis_dspeed, X2axis_dspeed, X2axis_dspeed);//X2축 이동 속도를 건조 속도로 변경
                         }
-                        else
+                        else//온도가 높을때 - 히터 가열하지 않고 축만 이동
                         {
                             AxisMovement(X2axis, X2axis_roller_min_pos - 50);
                         }
@@ -3128,17 +3151,18 @@ namespace BinderJetMotionControllerVer._1
                         if (PrintEnable == false) return;
                         TempRead();
                         await Templogging(Currentlayer + 1, 0.25);
-                        if (temp < templimit - temprange)
+                        //과열 방지 관련 내용
+                        if (temp < templimit - temprange)//온도가 낮을 경우 재가열
                         {
                             Printing_Sequence = pHeater_ON;
                         }
-                        else if (temp > templimit + temprange)
+                        else if (temp > templimit + temprange)//온도가 높을 경우 대기 후 재측정
                         {
                             Console.WriteLine("과열 대기중");
                             await Task.Run(() => Task.Delay(5000).Wait());
                             Printing_Sequence = pZ_Up;
                         }
-                        else
+                        else//온도가 적당할 경우 다음 시퀸스 진행
                         {
                             Printing_Sequence = pPowder_Feed_Ready;
                         }
@@ -3488,7 +3512,7 @@ namespace BinderJetMotionControllerVer._1
                         double perc = 100.0 * Convert.ToDouble(Currentlayer) / JobLayer;
                         percentprogress.Text = Convert.ToString(Math.Round(perc, 1)) + "%";
 
-                        if (Currentlayer % 4 == 0 || Currentlayer == JobLayer)
+                        if (Currentlayer % 4 == 0 || Currentlayer == JobLayer)//4번마다 헤드 클리닝 수행
                         {
                             hcc = Task.Run(() => Head_cleaning2());
                             //hcc = Task.Run(() => Head_Cleaning(Xaxis_Cleaning_pos, Xaxis_ready_pos, Yaxis_Cleaning_start_pos, Yaxis_Cleaning_end_pos, Yaxis_single_lane_pos, Yaxis_Cleaning_speed, Yaxis_speed));
@@ -3534,25 +3558,31 @@ namespace BinderJetMotionControllerVer._1
 
         private async void headcleaning_Click(object sender, EventArgs e)
         {
+            //헤드 클리닝 버튼 수행하였을때
             Logger.WriteButtonLog("Printhead Clean", logButtonPath);
 
             //var hcc = Task.Run(() => Head_Cleaning(0, 90, 245, 45, 100, 8, 50));
             var hcc = Task.Run(() => Head_cleaning2());
             await hcc;
+            //비동기로 헤드 클리닝 수행 시키지만 wait  하여 동기
 
         }
 
         private async void suplp_Click(object sender, EventArgs e)
         {
+            //파우더 공급 버튼 수행하였을때
             Logger.WriteButtonLog("Powder_Supply", logButtonPath);
 
             var pss = Task.Run(() => Powder_Supply(Convert.ToInt32(txtShutterOpenTime.Text), 0, 44));
             await pss;
+            //비동기로 파우더 공급 하지만  wait 하여 동기
         }
 
         private void recoatwf_Click(object sender, EventArgs e)
         {
+            //리코터 버튼 가동하였을때
 
+            //파라미터 Reading
             Logger.WriteButtonLog("Recoating (Adv) Started with " + " Powder " + Convert.ToString(rpowder) + "/Roller " + Convert.ToString(rroller) + "/Zmove " + Convert.ToString(rzmove), logButtonPath);
             double step_rspeed = Convert.ToDouble(txtstepspeed.Text);
             double recoating_speed = Convert.ToDouble(txtrspeed.Text);
@@ -3560,6 +3590,8 @@ namespace BinderJetMotionControllerVer._1
             int maxonrpm = Convert.ToInt32(txtmaxonrpm.Text) * 1000;
             string processstring = Convert.ToString(DateTime.Now) + "___리코팅 동작 가동 조건 :" + " Powder " + Convert.ToString(rpowder) + "/Roller " + Convert.ToString(rroller) + "/Zmove " + Convert.ToString(rzmove);
             processbox.Items.Insert(0, processstring);
+
+
             PaixMotion.SetSCurveSpeed(X2axis, iStartSpeed, 100, 100, 100);//X2축 이동 속도를 복귀 속도로 변경
             if (rzmove == true)
             {
@@ -3595,6 +3627,7 @@ namespace BinderJetMotionControllerVer._1
 
         private void camera_Click(object sender, EventArgs e)
         {
+            //카메라 셔터 테스트용 
             Paix_MotionController.NMC2.nmc_SetMDIOOutPin(devID, 1, 1);// (IO OUT 1번 상태를 1로 바꿈) - Shutter Send
 
             Thread.Sleep(100);
@@ -3605,6 +3638,7 @@ namespace BinderJetMotionControllerVer._1
 
         private void btnSerialRecieve_Click(object sender, EventArgs e)
         {
+            //온도 시험 측정용 (기록됨)
             Logger.WriteButtonLog("Read Temperature", logButtonPath);
             TempRead();
             Templogging(0, 0);
@@ -3656,7 +3690,7 @@ namespace BinderJetMotionControllerVer._1
 
         private async Task step_on(double spd, int dur)
         {
-
+            //비동기로 stepper모터를 동작시키는 함수
             Paix_MotionController.NMC2.nmc_SetSCurveSpeed(devID2, Raxis, rStartSpeed, rAccelSpeed, rDeccelSpeed, spd * 12);
             Paix_MotionController.NMC2.nmc_SetSCurveSpeed(devID2, R2axis, rStartSpeed, rAccelSpeed, rDeccelSpeed, spd * 14);
             Paix_MotionController.NMC2.nmc_JogMove(devID2, Raxis, CCW);
@@ -3672,14 +3706,15 @@ namespace BinderJetMotionControllerVer._1
 
         private async void btnstepstart_Click(object sender, EventArgs e)
         {
+            //stepper 모터 동작 버튼
             Logger.WriteButtonLog("Step Start Button with speed : "+Convert.ToString(txtstepspeed.Text)+" duration: "+Convert.ToString(txtsteptime.Text), logButtonPath);
             btnstepstart.BackColor = Color.Red;
             btnstepstart.Enabled = false;
             double spd = Convert.ToDouble(txtstepspeed.Text);
-            int dur = Convert.ToInt16(txtsteptime.Text) * 1000;
+            int dur = Convert.ToInt16(txtsteptime.Text) * 1000;//maxon 관련 보정
             Console.WriteLine(DateTime.Now);
             string processstring = Convert.ToString(DateTime.Now) + "___파우더 공급 스텝모터 가동 -> " + Convert.ToString(DateTime.Now.AddMilliseconds(Convert.ToDouble(dur))) + " 종료";
-            if (dur == 0)
+            if (dur == 0)//duration이 0일경우 연속동작
             {
                 processstring = Convert.ToString(DateTime.Now) + "___파우더 공급 스텝모터 가동 - " + "연속동작";
             }
@@ -3692,6 +3727,7 @@ namespace BinderJetMotionControllerVer._1
 
         private void btnstepstop_Click(object sender, EventArgs e)
         {
+            //stepper 수동 정지 동작 버튼
             Logger.WriteButtonLog("Step Stop Button", logButtonPath);
             Paix_MotionController.NMC2.nmc_SuddenStop(devID2, Raxis);
             Paix_MotionController.NMC2.nmc_SuddenStop(devID2, R2axis);
@@ -3700,6 +3736,8 @@ namespace BinderJetMotionControllerVer._1
         }
         private byte[] Bldc_byteget(int speed)
         {
+            //모터뱅크 BLDC를 사용할때 진행했던 암호화 함수, 현재 사용하지 않음.
+            //레거시 코드이나 문제 있을수 있어 유지
             string spd1 = "00";
             string spd2 = "00";
             string spdstring = (speed * 10).ToString("X");
@@ -3741,6 +3779,7 @@ namespace BinderJetMotionControllerVer._1
 
         private string Bldc_speedget(byte[] bldcbytecode)
         {
+            //모터뱅크 BLDC를 사용할때 진행했던 암호화 함수, 현재 사용하지 않음.
             string bldcspeed = "";
 
             string sp1 = bldcbytecode[7].ToString("X");
@@ -3763,7 +3802,8 @@ namespace BinderJetMotionControllerVer._1
         }
         private async Task roller_on(int rpm, int dur)
         {
-            maxon_run(rpm, false);
+            //맥슨 Roller 컨트롤용 함수
+            maxon_run(rpm*1000, false);
             //BLDC_RUN_1_rev(bldcbytecode);
             if (dur > 0)
             {
@@ -3775,10 +3815,11 @@ namespace BinderJetMotionControllerVer._1
         }
         private async void btnrollerstart_Click(object sender, EventArgs e)
         {
+            //맥슨 롤러 시작버튼 함수
             Logger.WriteButtonLog("Roller Start Button with speed : " + Convert.ToString(txtrollerspeed.Text) + " duration: " + Convert.ToString(txtrollertime.Text), logButtonPath);
             btnrollerstart.BackColor = Color.Red;
             btnrollerstart.Enabled = false;
-            byte[] bldcbytecode = Bldc_byteget(Convert.ToInt32(txtrollerspeed.Text));
+            //byte[] bldcbytecode = Bldc_byteget(Convert.ToInt32(txtrollerspeed.Text));
             int dur = Convert.ToInt16(txtrollertime.Text) * 1000;
             string processstring = Convert.ToString(DateTime.Now) + "___평탄화 롤러 가동 -> " + Convert.ToString(DateTime.Now.AddMilliseconds(Convert.ToDouble(dur))) + " 종료";
             if (dur == 0)
@@ -3801,6 +3842,7 @@ namespace BinderJetMotionControllerVer._1
 
         private void btnrollerstop_Click(object sender, EventArgs e)
         {
+            //맥슨 롤러 정지용 함수
             Logger.WriteButtonLog("Roller Stop Button", logButtonPath);
             //BLDC_STOP_1();
             string processstring = Convert.ToString(DateTime.Now) + "___평탄화 롤러 가동 중단";
@@ -3817,6 +3859,7 @@ namespace BinderJetMotionControllerVer._1
 
         private async void btnstepjog_MouseDown(object sender, MouseEventArgs e)
         {
+            //stepper 조그 컨트롤용
             Logger.WriteButtonLog("Step jog control start with speed : "+Convert.ToString(txtstepspeed.Text), logButtonPath);
             btnstepjog.BackColor = Color.Red;
             double spd = Convert.ToDouble(txtstepspeed.Text);
@@ -3827,6 +3870,7 @@ namespace BinderJetMotionControllerVer._1
 
         private void btnstepjog_MouseUp(object sender, MouseEventArgs e)
         {
+            //stepper 조그 컨트롤용
             Logger.WriteButtonLog("Step jog control end with speed : " + Convert.ToString(txtstepspeed.Text), logButtonPath);
             Paix_MotionController.NMC2.nmc_SuddenStop(devID2, Raxis);
             Paix_MotionController.NMC2.nmc_SuddenStop(devID2, R2axis);
@@ -3837,9 +3881,10 @@ namespace BinderJetMotionControllerVer._1
 
         private async void btnrollerjog_MouseDown(object sender, MouseEventArgs e)
         {
+            //맥슨 롤러 조그 컨트롤용
             Logger.WriteButtonLog("Roller jog control start with speed : " + Convert.ToString(txtrollerspeed.Text), logButtonPath);
             btnrollerjog.BackColor = Color.Red;
-            byte[] bldcbytecode = Bldc_byteget(Convert.ToInt32(txtrollerspeed.Text));
+            //byte[] bldcbytecode = Bldc_byteget(Convert.ToInt32(txtrollerspeed.Text));
             string processstring = Convert.ToString(DateTime.Now) + "___롤러 조그 컨트롤 시작";
             processbox.Items.Insert(0, processstring);
             roller_on(Convert.ToInt32(txtrollerspeed.Text), Convert.ToInt32(txtrollertime.Text));
@@ -3853,6 +3898,7 @@ namespace BinderJetMotionControllerVer._1
 
         private void btnrollerjog_MouseUp(object sender, MouseEventArgs e)
         {
+            //맥슨 롤러 조그 컨트롤용
             Logger.WriteButtonLog("Roller jog control end with speed : " + Convert.ToString(txtrollerspeed.Text), logButtonPath);
             //BLDC_STOP_1();
             string processstring = Convert.ToString(DateTime.Now) + "___롤러 조그 컨트롤 종료";
@@ -3867,6 +3913,7 @@ namespace BinderJetMotionControllerVer._1
 
         private void PowderChk_CheckStateChanged(object sender, EventArgs e)
         {
+            //리코팅시 파우더 공급 여부에 대한 체크박스 동작용
             if (PowderChk.Checked == true)
             {
                 //PowderChk.BackColor = Color.DarkGreen;
@@ -3891,6 +3938,7 @@ namespace BinderJetMotionControllerVer._1
 
         private void RollerChk_CheckStateChanged(object sender, EventArgs e)
         {
+            //리코팅시 롤러 동작 여부에 대한 체크박스 동작용
             if (RollerChk.Checked == true)
             {
                 //RollerChk.BackColor = Color.DarkGreen;
@@ -3917,6 +3965,7 @@ namespace BinderJetMotionControllerVer._1
         {
             if (ZmoveChk.Checked == true)
             {
+                //리코팅시 Z축 이동 여부에 대한 체크박스 동작용
                 //ZmoveChk.BackColor = Color.DarkGreen;
                 //ZmoveChk.ForeColor = Color.Black;
                 rzmove = true;
@@ -3939,6 +3988,7 @@ namespace BinderJetMotionControllerVer._1
 
         private void btnparasave_Click(object sender, EventArgs e)
         {
+            //파라미터 세이브용 (수정 필요하나, 실제적으로 사용하지 않음.)
             Logger.WriteButtonLog("Save Parameter", logButtonPath);
             string OpenFilePath = System.Environment.CurrentDirectory;
             ParameterSDialog.InitialDirectory = OpenFilePath;
@@ -3997,6 +4047,7 @@ namespace BinderJetMotionControllerVer._1
 
         private async void btnFloop_Click(object sender, EventArgs e)
         {
+            //프린팅 시작 전 자동 파우더 형성 함수
             Logger.WriteButtonLog("F loop button pressed with loop : "+Convert.ToString(txtFloop.Text), logButtonPath);
             for (int i = 0; i < Convert.ToInt32(txtFloop.Text); i++)
             {
@@ -4033,6 +4084,7 @@ namespace BinderJetMotionControllerVer._1
 
         private async void btnallhome_Click(object sender, EventArgs e)
         {
+            //모든 축 homming 진행
             Logger.WriteButtonLog("All Home in Auto mode", logButtonPath);
             string processstring = Convert.ToString(DateTime.Now) + "___모든 축 Homing 시작";
             processbox.Items.Insert(0, processstring);
@@ -4061,6 +4113,7 @@ namespace BinderJetMotionControllerVer._1
 
         private async void btnbedin_Click(object sender, EventArgs e)
         {
+            //Bed in 동작 자동화 함수
             Logger.WriteButtonLog("Bed in button pressed", logButtonPath);
             string processstring = Convert.ToString(DateTime.Now) + "___Bed IN 진행중";
             PaixMotion.SetSCurveSpeed(Zaxis, iStartSpeed, 1, 1, 2);
@@ -4093,6 +4146,7 @@ namespace BinderJetMotionControllerVer._1
 
         private async void btnbedout_Click(object sender, EventArgs e)
         {
+            //Bed out 동작 자동화 함수
             Logger.WriteButtonLog("Bed out button pressed", logButtonPath);
             string processstring = Convert.ToString(DateTime.Now) + "___Bed OUT 진행중";
             processbox.Items.Insert(0, processstring);
@@ -4136,6 +4190,7 @@ namespace BinderJetMotionControllerVer._1
 
         private async void selectedimgshow(short imgnum)
         {
+            //선택된 이미지를 보여주는 함수
             string item_name = listImage.Items[Convert.ToInt16(imgnum)].ToString();
             item_name = Path.Combine("Images", item_name);
             //Console.WriteLine(Path.GetFullPath(item_name));
@@ -4175,10 +4230,12 @@ namespace BinderJetMotionControllerVer._1
 
         private void button2_Click(object sender, EventArgs e)
         {
+            //개발용
             Paix_MotionController.NMC2.nmc_SetMDIOOutputTog(devID, 0);
         }
         private async void button1_Click(object sender, EventArgs e)
         {
+            //개발용
             //Paix_MotionController.NMC2.nmc_SetMDIOOutputTog(devID, 4);
 
             Console.WriteLine(Currentlayer.ToString());
@@ -4231,6 +4288,7 @@ namespace BinderJetMotionControllerVer._1
 
         private async void imgtrackbar_Scroll(object sender, EventArgs e)
         {
+            //이미지 스크롤용
             if (listImage.Items.Count > 0)
             {
                 imgtrackbar.Minimum = 0;
@@ -4242,11 +4300,13 @@ namespace BinderJetMotionControllerVer._1
 
         private void updatelbllayer(object sender, EventArgs e)
         {
+            //레이어 증가에 따른 이미지 변화
             lbllayer.Text = (imgtrackbar.Value + 1).ToString();
         }
 
         private void PModChanged(object sender, EventArgs e)
         {
+            //공정변수 변경용 함수
             if (ModChk.Checked == true)
             {
                 txtlayerthickness.Enabled = true;
@@ -4282,6 +4342,7 @@ namespace BinderJetMotionControllerVer._1
         }
         private void calcload(int load, short axis)
         {
+            //축 부하 측정용 함수
             load = Math.Abs(load);
             int perload = 0;
             switch (axis)
@@ -4311,6 +4372,7 @@ namespace BinderJetMotionControllerVer._1
         }
         private void coloringload(int perload, Button target)
         {
+            //축 부하에 따른 색상 표시용 함수
             if (perload < 1)
             {
                 target.BackColor = SystemColors.Info;
@@ -4338,6 +4400,7 @@ namespace BinderJetMotionControllerVer._1
         }
         private void showmachine(double Xpos, double X2pos, double Ypos, double Zpos)
         {
+            //기기 상태 그래픽 표시용 함수
             showpnlX.Location = new Point(Convert.ToInt32(Xpos/4), 15);
             showpnlX2.Location = new Point(250-Convert.ToInt32(X2pos / 4), 15);
             showpnlY.Location = new Point(0 , Convert.ToInt32(Ypos / 4));
@@ -4351,6 +4414,7 @@ namespace BinderJetMotionControllerVer._1
         }
         private void showio(short powder, short ir, short clamp)
         {
+            //기기 상태 (IO 표시용 함수)
             if (ir==1)
             {
                 showpnlir.BackColor = Color.Crimson;
@@ -4375,6 +4439,7 @@ namespace BinderJetMotionControllerVer._1
         }
         private void picinitialize()
         {
+            //이미지 창 관련 초기화 함수
             Bitmap oimage = new Bitmap(Path.GetFullPath(Path.Combine("Image", "unchecked.png"))); //체크되지 않은 기본 이미지를 불러옴
             picpowderchk.Image = oimage;//이미지 내부 할당
             Size resize = new Size(22, 22);//이미지 리사이즈 지정
@@ -4385,6 +4450,7 @@ namespace BinderJetMotionControllerVer._1
         }
         private void showstep(short r1,short r2)
         {
+            //step 동작 상태를 나타내주는 함수
             //Console.WriteLine(r2);
             if (r1*r2 >0)
             {
@@ -4403,7 +4469,7 @@ namespace BinderJetMotionControllerVer._1
         }
         private void log_printingsettings()
         {
-
+            //프린트 세팅 로깅 함수
             string savestring = "";
             string[] CatString = { "double Layer_Thickness", "short Dwell_Time", "double Temp_Limit", "double Temp_Range", "string Roller_Speed", "double Stepper_Speed", "double Recoating_Speed", "string Binder_Value" };
             foreach (string Cat in CatString)
@@ -4469,6 +4535,7 @@ namespace BinderJetMotionControllerVer._1
 
         private async void Head_on_Click(object sender, EventArgs e)
         {
+            //헤드 주기 세척 관련 함수
             head_onv =true;
             string processstring = Convert.ToString(DateTime.Now) + "프린트헤드 정기 퍼지 수행 시작";
             processbox.Items.Insert(0, processstring);
@@ -4486,6 +4553,7 @@ namespace BinderJetMotionControllerVer._1
 
         private void Head_off_Click(object sender, EventArgs e)
         {
+            //헤드 주기 세척 정지 함수
             string processstring = Convert.ToString(DateTime.Now) + "프린트헤드 정기 퍼지 수행 종료";
             processbox.Items.Insert(0, processstring);
             head_onv = false;

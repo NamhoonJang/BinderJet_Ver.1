@@ -3512,7 +3512,7 @@ namespace BinderJetMotionControllerVer._1
                         double perc = 100.0 * Convert.ToDouble(Currentlayer) / JobLayer;
                         percentprogress.Text = Convert.ToString(Math.Round(perc, 1)) + "%";
 
-                        if (Currentlayer % 4 == 0 || Currentlayer == JobLayer)//4번마다 헤드 클리닝 수행
+                        if (Currentlayer % 1 == 0 || Currentlayer == JobLayer)//4번마다 헤드 클리닝 수행
                         {
                             hcc = Task.Run(() => Head_cleaning2());
                             //hcc = Task.Run(() => Head_Cleaning(Xaxis_Cleaning_pos, Xaxis_ready_pos, Yaxis_Cleaning_start_pos, Yaxis_Cleaning_end_pos, Yaxis_single_lane_pos, Yaxis_Cleaning_speed, Yaxis_speed));

@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="packages\Obfuscar.2.2.33\build\obfuscar.props" Condition="Exists('packages\Obfuscar.2.2.33\build\obfuscar.props')" />
+  <Import Project="packages\Obfuscar.2.2.38\build\obfuscar.props" Condition="Exists('packages\Obfuscar.2.2.38\build\obfuscar.props')" />
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -170,20 +170,21 @@
     <Content Include="Images\abc2.bmp" />
     <Content Include="Images\abc3.bmp" />
     <Content Include="Images\randimg.bmp" />
+    <Content Include="obfuscar.xml" />
     <Content Include="Waveforms\AA04-TEST-ONLY-6LCA-HNY-3CYCLE-PALETTE-REMAP-INCLUDED.TXT" />
     <Content Include="Waveforms\AA15-TEST-ONLY-4LCB-HNY-3CYCLE-PALETTE-REMAP-INCLUDED.TXT" />
     <Content Include="Waveforms\XX04-TEST-ONLY-6LCA-HNY-3CYCLE-PALETTE-REMAP-EXCLUDED.TXT" />
     <Content Include="Waveforms\XX15-TEST-ONLY-4LCB-HNY-3CYCLE-PALETTE-REMAP-EXCLUDED.TXT" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>cd $(ProjectDir)
+"$(Obfuscar)" Obfuscar.xml</PostBuildEvent>
+  </PropertyGroup>
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
       <ErrorText>이 프로젝트는 이 컴퓨터에 없는 NuGet 패키지를 참조합니다. 해당 패키지를 다운로드하려면 NuGet 패키지 복원을 사용하십시오. 자세한 내용은 http://go.microsoft.com/fwlink/?LinkID=322105를 참조하십시오. 누락된 파일은 {0}입니다.</ErrorText>
     </PropertyGroup>
-    <Error Condition="!Exists('packages\Obfuscar.2.2.33\build\obfuscar.props')" Text="$([System.String]::Format('$(ErrorText)', 'packages\Obfuscar.2.2.33\build\obfuscar.props'))" />
+    <Error Condition="!Exists('packages\Obfuscar.2.2.38\build\obfuscar.props')" Text="$([System.String]::Format('$(ErrorText)', 'packages\Obfuscar.2.2.38\build\obfuscar.props'))" />
   </Target>
-  <PropertyGroup>
-    <PostBuildEvent>
-    </PostBuildEvent>
-  </PropertyGroup>
 </Project>

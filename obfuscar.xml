@@ -1,0 +1,11 @@
+﻿<?xml version="1.0"?>
+<Obfuscator>
+	<Var name ="InPath" value =".\bin\x64\Release\"/>
+	<Var name ="OutPath" value ="$(InPath)\Obfuscated"/>
+
+	<Var name = "KeepPublicApi" value ="true"/>
+	<Var name = "HidePrivateApi" value ="true"/>
+	<Var name ="HideStrings" value = "true"/>
+
+	<Module file ="$(InPath)\BinderJetMotionControllerVer.1.exe"/>
+</Obfuscator>

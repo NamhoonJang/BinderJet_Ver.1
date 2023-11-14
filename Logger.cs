@@ -8,14 +8,14 @@ using System.IO;
 
 namespace BinderJetMotionControllerVer._1
 {
-    public class Logger
+    internal class Logger
     {
         static Queue<string> logQueue = new Queue<string>();
         static Queue<string> buttonLogQueue = new Queue<string>();
         static Queue<string> tempLogQueue = new Queue<string>();
         private static readonly object writeLock = new object();
 
-        public async static void WriteLog(string str, bool write, string filePath)
+        internal async static void WriteLog(string str, bool write, string filePath)
         {
             //Debug.WriteLine(str);
             logQueue.Enqueue(str);
@@ -40,7 +40,7 @@ namespace BinderJetMotionControllerVer._1
             }
         }
 
-        public async static void WriteButtonLog(string str, string filePath)
+        internal async static void WriteButtonLog(string str, string filePath)
         {
             string date = DateTime.Now.ToString("yyyy-MM-ddtthhmmss");
             string sendData = date + " " + str;
@@ -56,7 +56,7 @@ namespace BinderJetMotionControllerVer._1
                 }
             }
         }
-        public async static void WrtieTempLog(string str, string filePath)
+        internal async static void WrtieTempLog(string str, string filePath)
         {
             string sendData = str;
             

@@ -53,7 +53,7 @@ namespace XAARWinform
 
         bool FirstInit = false;
 
-        public void Connect()
+        internal void Connect()
         {
             _phPowered = new AutoResetEvent(false); _xpmConnected = new AutoResetEvent(false);
 
@@ -82,7 +82,7 @@ namespace XAARWinform
             }
         }
 
-        public void config()
+        internal void config()
         {
             phType = xpmInterconnection.GetAllPrintheadInformation().First(p => p.XspiPort.Equals(_phIndex)).PrintheadTag.PrintheadType;
             printhead = ExamplesUtilities.GetDefaultPrintead(phType, _phIndex);
@@ -101,7 +101,7 @@ namespace XAARWinform
             xpmInterconnection.DisableIdleSpitting();
         }
 
-        public void config2()
+        internal void config2()
         {
             phType = xpmInterconnection.GetAllPrintheadInformation().First(p => p.XspiPort.Equals(_phIndex)).PrintheadTag.PrintheadType;
             printhead = ExamplesUtilities.GetDefaultPrintead(phType, _phIndex);
@@ -121,7 +121,7 @@ namespace XAARWinform
         }
 
 
-        public void Disconnect()
+        internal void Disconnect()
         {
             if (xpmInterconnection != null)
             {
@@ -135,7 +135,7 @@ namespace XAARWinform
             //MessageBox.Show("Printhead disconnection");
         }
 
-        public void Swathedown()
+        internal void Swathedown()
         {
             //var rows = printhead.PrintheadProperties.NumberOfRows;
 
@@ -168,7 +168,7 @@ namespace XAARWinform
             //Console.WriteLine(@"Downloading swathes");
         }
 
-        public void Whiteimagesave()
+        internal void Whiteimagesave()
         {
             /*
             var rows = printhead.PrintheadProperties.NumberOfRows;
@@ -185,7 +185,7 @@ namespace XAARWinform
             creatprintsquence_purge();
         }
 
-        public void creatprintsquence_purge()
+        internal void creatprintsquence_purge()
         {
             PrintSequence sequence;
             sequence = xpmInterconnection.CreatePrintSequence(_macAddress, "Sequence#0", printhead);
@@ -193,7 +193,7 @@ namespace XAARWinform
             sequence.Run();
         }
 
-        public void Swathedown2()
+        internal void Swathedown2()
         {
             //var rows = printhead.PrintheadProperties.NumberOfRows;
 
@@ -226,7 +226,7 @@ namespace XAARWinform
             //Console.WriteLine(@"Downloading swathes");
         }
 
-        public void printstart()
+        internal void printstart()
         {
             //var sequence = xpmInterconnection.CreatePrintSequence(_macAddress, "Sequence#1", printhead);
             //sequence.Add(new PrintOperation(swathe.Metadata.Tag));
@@ -236,7 +236,7 @@ namespace XAARWinform
             if (!xpmInterconnection.EnterPrintMode(phsPerXpmMap)) return;
         }
 
-        public void printstop()
+        internal void printstop()
         {
             Console.WriteLine(@"Exiting print mode");
             if (!xpmInterconnection.ExitPrintMode(phsPerXpmMap)) return;
@@ -265,20 +265,20 @@ namespace XAARWinform
             }
         }
 
-        public void swathesquencedel()
+        internal void swathesquencedel()
         {
             xpmInterconnection.DeleteAllPrintSequences();
             xpmInterconnection.DeleteAllSwathes();
         }
 
-        public void squencedel()
+        internal void squencedel()
         {
             xpmInterconnection.DeleteAllPrintSequences();
             //xpmInterconnection.DeleteAllSwathes();
         }
 
 
-        public string Swathesdownload(string filename, string swathename)
+        internal string Swathesdownload(string filename, string swathename)
         {
             var imageFullName = Path.Combine(ExamplesUtilities.GetImagePath(), filename);
             var image = ImageUtilities.LoadImageFromFile(imageFullName);
@@ -293,7 +293,7 @@ namespace XAARWinform
 
             return swathe.Metadata.Tag;
         }
-        public void ImageSwatheDown(string filename, string swathename)
+        internal void ImageSwatheDown(string filename, string swathename)
         {
             var imageFullName = Path.Combine(ExamplesUtilities.GetImagePath(), filename);
             var originalbitmap = ImageUtilities.LoadImageFromFile(imageFullName);
@@ -306,8 +306,8 @@ namespace XAARWinform
 
         // 이미지 처리 함수
         Image swatheimage0, swatheimage1;
-        public int dirrandnum, imagewidth;
-        public void imageswathedown(int num)
+        internal int dirrandnum, imagewidth;
+        internal void imageswathedown(int num)
         {
             string swathenum, swathenum2, swathenum3, swathenum4;
 
@@ -342,7 +342,7 @@ namespace XAARWinform
             //creatprintsquence();
         }
 
-        public void creatprintsquence(int num)
+        internal void creatprintsquence(int num)
         {
             string sequencenum = "Sequence#" + num.ToString();
             string swathenum = "swathe#" + num.ToString();
@@ -351,7 +351,7 @@ namespace XAARWinform
             sequence.Run();
         }
 
-        public void creatprintbisquence(int num)
+        internal void creatprintbisquence(int num)
         {
             string sequencenum = "Sequence#" + num.ToString();
             string swathenum = "swathe#" + num.ToString();
@@ -364,7 +364,7 @@ namespace XAARWinform
             sequence.Run();
         }
 
-        public void ImageConProc(string filename)
+        internal void ImageConProc(string filename)
         {
             var imageFullName = Path.Combine(ExamplesUtilities.GetImagePath(), filename);
             Bitmap OriginalImage = new Bitmap(imageFullName);
@@ -412,7 +412,7 @@ namespace XAARWinform
             }
         }
 
-        public Image ImageCenter(Image image)
+        internal Image ImageCenter(Image image)
         {
             //var imageFullName = Path.Combine(ExamplesUtilities.GetImagePath(), filename);
             Bitmap OriginalImage = new Bitmap(image);
@@ -432,7 +432,7 @@ namespace XAARWinform
         }
 
         /*
-        public void imagecon_left()
+        internal void imagecon_left()
         {
             var imageFullName = Path.Combine(ExamplesUtilities.GetImagePath(), "abc3.bmp");
             Bitmap image1 = new Bitmap(imageFullName);
@@ -445,7 +445,7 @@ namespace XAARWinform
             //image3.image4("abc2.bmp");
         }
 
-        public void imagecon_right()
+        internal void imagecon_right()
         {
             var imageFullName = Path.Combine(ExamplesUtilities.GetImagePath(), "abc3.bmp");
             Bitmap image1 = new Bitmap(imageFullName);
@@ -458,7 +458,7 @@ namespace XAARWinform
             //image3.image4("abc2.bmp");
         }
 
-        public void imagecut()
+        internal void imagecut()
         {
             var imageFullName = Path.Combine(ExamplesUtilities.GetImagePath(), "abc.bmp");
             Bitmap image1 = new Bitmap(imageFullName);
@@ -472,7 +472,7 @@ namespace XAARWinform
         */
 
         // 이미지 가운데 정렬 작업 함수
-        public static Bitmap Resize_center(Image originalImage, int targetX, int targetY)
+        internal static Bitmap Resize_center(Image originalImage, int targetX, int targetY)
         {
             //Image originalImage = Image.FromFile(importPath);
 
@@ -504,7 +504,7 @@ namespace XAARWinform
         }
 
         // 이미지를 왼쪽으로 Shift 함수
-        public static Image Resize_left(Image originalImage, int targetX, int targetY)
+        internal static Image Resize_left(Image originalImage, int targetX, int targetY)
         {
             //Image originalImage = Image.FromFile(importPath);
 
@@ -535,7 +535,7 @@ namespace XAARWinform
         }
 
         // 이미지를 오른쪽으로 Shift 함수
-        public static Image Resize_right(Image originalImage, int targetX, int targetY)
+        internal static Image Resize_right(Image originalImage, int targetX, int targetY)
         {
             //Image originalImage = Image.FromFile(importPath);
 
@@ -565,7 +565,7 @@ namespace XAARWinform
             //newImage.Dispose();
         }
 
-        public Image ImageRandAdd(Image originalimage, int randnum)
+        internal Image ImageRandAdd(Image originalimage, int randnum)
         {
             Image addimage;
 
@@ -580,7 +580,7 @@ namespace XAARWinform
             return addimage;
         }
 
-        public Image ImageRandAddrotate(Image originalimage, int randnum)
+        internal Image ImageRandAddrotate(Image originalimage, int randnum)
         {
             Image addimage;
             originalimage.RotateFlip(RotateFlipType.Rotate180FlipNone);
@@ -596,7 +596,7 @@ namespace XAARWinform
             return addimage;
         }
 
-        public Image Imageleftcut(Image origianal)
+        internal Image Imageleftcut(Image origianal)
         {
             Bitmap originalimage = new Bitmap(origianal);
             Bitmap cutimage = originalimage.Clone(new Rectangle(0, 0, 978, originalimage.Height), System.Drawing.Imaging.PixelFormat.DontCare);
@@ -606,7 +606,7 @@ namespace XAARWinform
             return cutimage1;
         }
 
-        public Image Imagerightcut(Image origianal)
+        internal Image Imagerightcut(Image origianal)
         {
             Bitmap originalimage = new Bitmap(origianal);
             Bitmap cutimage = originalimage.Clone(new Rectangle(972, 0, 1950-972, originalimage.Height), System.Drawing.Imaging.PixelFormat.DontCare);
@@ -616,14 +616,14 @@ namespace XAARWinform
             return cutimage1;
         }
 
-        public static Bitmap Con32to24bpp(Bitmap in32bppimage)
+        internal static Bitmap Con32to24bpp(Bitmap in32bppimage)
         {
             var bmp = new Bitmap(in32bppimage.Width, in32bppimage.Height, System.Drawing.Imaging.PixelFormat.Format24bppRgb);
             using (var gr = Graphics.FromImage(bmp)) gr.DrawImage(in32bppimage, new Rectangle(0, 0, in32bppimage.Width, in32bppimage.Height));
             return bmp;
         }
 
-        public static Bitmap Convert24bppTo8bpp(Bitmap in24bppImage)
+        internal static Bitmap Convert24bppTo8bpp(Bitmap in24bppImage)
         {
             if (in24bppImage != null)
             {
@@ -714,7 +714,7 @@ namespace XAARWinform
             return bitmap;
         }
         
-        public static BitmapImage ToBitmapImage(Bitmap bitmap)
+        internal static BitmapImage ToBitmapImage(Bitmap bitmap)
         {
             using (var memory = new MemoryStream())
             {
@@ -732,13 +732,13 @@ namespace XAARWinform
             }
         }
         
-        public void invertcolor()
+        internal void invertcolor()
         {
             var PaletteRemap = new byte[] { 0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0 };
             xpmInterconnection.SetPaletteRemapTableFull(_macAddress, 0, PaletteRemap);
         }
 
-        public void SetPaletteTable(byte[] binderValue)
+        internal void SetPaletteTable(byte[] binderValue)
         {
             //var PaletteRemap = new byte[] { 0x04, 0x04, 0x04, 0x04, 0x04, 0x04, 0x04, 0x00, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0 };
             //var PaletteRemap = new byte[] { 0x04, 0x03, 0x03, 0x02, 0x02, 0x02, 0x00, 0x00, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0 };
@@ -750,27 +750,27 @@ namespace XAARWinform
             Console.WriteLine(String.Join(" ", PaletteRemap));
         }
 
-        public void WriteWaveForm_d844()
+        internal void WriteWaveForm_d844()
         {
             xpmInterconnection.WriteWaveform("00-1e-c0-ad-28-0c", 0, 0, "C:\\Users\\Binder_Jet\\Desktop\\waveform\\D844-1001.6-8L-720.txt");
         }
 
-        //public void WriteWaveForm_h884()
+        //internal void WriteWaveForm_h884()
         //{
         //    xpmInterconnection.WriteWaveform("00-1e-c0-ad-28-0c", 0, 0, "C:\\Users\\Binder_Jet\\Desktop\\waveform\\H884-100312-7LCB-CONFIDENTIAL.txt");
         //}
 
-        public void EncoderchangeInternal()
+        internal void EncoderchangeInternal()
         {
             config2();
             xpmInterconnection.SetGlobalPrintParameters(ExamplesUtilities.GetGlobalPrintParameters());
         }
-        public void EncoderchangeExternal()
+        internal void EncoderchangeExternal()
         {
             config();
             xpmInterconnection.SetGlobalPrintParameters(ExamplesUtilities.GetGlobalPrintParameters());
         }
-        public void cleanstart1()
+        internal void cleanstart1()
         {
             //WriteWaveForm_h884();
             //WriteWaveForm_dh93();
@@ -778,7 +778,7 @@ namespace XAARWinform
             Whiteimagesave();
         }
 
-        public void cleanstart2()
+        internal void cleanstart2()
         {
             printstart();
             swPdCompleted = new AutoResetEvent(false);
@@ -789,7 +789,7 @@ namespace XAARWinform
             //swPdTimer2.Start();
         }
 
-        public void cleanstop()
+        internal void cleanstop()
         {
             swPdCompleted.WaitOne();
             //swPdCompleted2.WaitOne();
@@ -801,7 +801,7 @@ namespace XAARWinform
             config();
         }
         bool waveformwite;
-        public void WriteWaveForm_dh93()//클리닝 웨이브폼
+        internal void WriteWaveForm_dh93()//클리닝 웨이브폼
         {
             var waveformPath = ExamplesUtilities.GetWaveformPath();
 
@@ -824,7 +824,7 @@ namespace XAARWinform
 
         }
 
-        public void WriteWaveForm_h884()//적층용 웨이브폼
+        internal void WriteWaveForm_h884()//적층용 웨이브폼
         {
             var waveformPath = ExamplesUtilities.GetWaveformPath();
 

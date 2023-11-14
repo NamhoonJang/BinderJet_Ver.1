@@ -19,9 +19,9 @@ namespace BinderJetMotionControllerVer._1
         bool m_bIsOpen2;
         short m_nDev_no;
         short m_nDev_no2;
-        public const short GROUP = 0;
+        internal const short GROUP = 0;
         bool printStop = false;
-        public void AstekMotion()
+        internal void AstekMotion()
         {
             NMC2.NMCEQUIPLIST NmcIPList = new NMC2.NMCEQUIPLIST();
             m_bIsOpen = false;
@@ -29,11 +29,11 @@ namespace BinderJetMotionControllerVer._1
             m_nDev_no2 = Convert.ToInt16(NmcIPList.lIp);
         }
 
-        public void setoutpintime(short ion,short time)
+        internal void setoutpintime(short ion,short time)
         {
             NMC2.nmc_SetOutLimitTimePin(200, 0, ion, 1, time*1000);
         }
-        public bool Open(short dev_no)
+        internal bool Open(short dev_no)
         {
             m_nDev_no = dev_no;
 
@@ -53,7 +53,7 @@ namespace BinderJetMotionControllerVer._1
             return m_bIsOpen;
         }
 
-        public bool Open2(short dev_no)
+        internal bool Open2(short dev_no)
         {
             m_nDev_no2 = dev_no;
 
@@ -73,7 +73,7 @@ namespace BinderJetMotionControllerVer._1
             return m_bIsOpen2;
         }
 
-        public bool Close()
+        internal bool Close()
         {
             NMC2.nmc_CloseDevice(m_nDev_no);
             NMC2.nmc_CloseDevice(m_nDev_no2);
@@ -83,7 +83,7 @@ namespace BinderJetMotionControllerVer._1
             return true;
         }
 
-        public bool SetSpeedPPS(short nAxis, double dStart, double dAcc, double dDec, double dMax)
+        internal bool SetSpeedPPS(short nAxis, double dStart, double dAcc, double dDec, double dMax)
         {
 
             short nRet = NMC2.nmc_SetSpeed(m_nDev_no, nAxis, dStart, dAcc, dDec, dMax);
@@ -99,7 +99,7 @@ namespace BinderJetMotionControllerVer._1
             return false;
         }
 
-        public bool SetSCurveSpeed(short nAxis, double dStart, double dAcc, double dDec, double dDrive)
+        internal bool SetSCurveSpeed(short nAxis, double dStart, double dAcc, double dDec, double dDrive)
         {
             short nRet = NMC2.nmc_SetSCurveSpeed(m_nDev_no, nAxis, dStart, dAcc, dDec, dDrive);
             switch (nRet)
@@ -114,7 +114,7 @@ namespace BinderJetMotionControllerVer._1
             return false;
         }
 
-        public bool RelMove( short nAxis, double fDist)
+        internal bool RelMove( short nAxis, double fDist)
         {
             int nRet;
             nRet = NMC2.nmc_RelMove(m_nDev_no, nAxis, fDist);
@@ -131,7 +131,7 @@ namespace BinderJetMotionControllerVer._1
             return false;
         }
 
-        public bool AbsMove(short nAxis, double fDist)
+        internal bool AbsMove(short nAxis, double fDist)
         {
 
             int nRet;
@@ -150,7 +150,7 @@ namespace BinderJetMotionControllerVer._1
                return false;
         }
 
-        public bool JogMove(short nAxis, short nDir)
+        internal bool JogMove(short nAxis, short nDir)
         {
             short nRet = NMC2.nmc_JogMove(m_nDev_no, nAxis, nDir);
             switch (nRet)
@@ -165,7 +165,7 @@ namespace BinderJetMotionControllerVer._1
             return false;
         }
 
-        public bool SlowStop(short nAxis)
+        internal bool SlowStop(short nAxis)
         {
 
             short nRet = NMC2.nmc_DecStop(m_nDev_no, nAxis);
@@ -181,7 +181,7 @@ namespace BinderJetMotionControllerVer._1
             return false;
         }
 
-        public bool Stop(short nAxis)
+        internal bool Stop(short nAxis)
         {
             short nRet = NMC2.nmc_SuddenStop(m_nDev_no, nAxis);
             switch (nRet)
@@ -196,7 +196,7 @@ namespace BinderJetMotionControllerVer._1
             return false;
         }
 
-        public bool RelMultiTwoMove(double[] fDist)
+        internal bool RelMultiTwoMove(double[] fDist)
         {
             short[] nAxis = {0, 1};
 
@@ -213,7 +213,7 @@ namespace BinderJetMotionControllerVer._1
             return false;
         }
 
-        public bool AbsMultiTwoMove(double[] fDist)
+        internal bool AbsMultiTwoMove(double[] fDist)
         {
             short[] nAxis = {0,1};
 
@@ -231,7 +231,7 @@ namespace BinderJetMotionControllerVer._1
 
         }
 
-        public bool SyncTwoMove(double pulse1, double pulse2, short opt)
+        internal bool SyncTwoMove(double pulse1, double pulse2, short opt)
         {
             short nRet = NMC2.nmc_Interpolation2Axis(m_nDev_no, 0, pulse1, 1, pulse2, opt);
             switch (nRet)
@@ -248,7 +248,7 @@ namespace BinderJetMotionControllerVer._1
         }
 
 
-        public bool SetCmd(short nAxis, double fValue)
+        internal bool SetCmd(short nAxis, double fValue)
         {
             short nRet = NMC2.nmc_SetCmdPos(m_nDev_no, nAxis, fValue);
             switch (nRet)
@@ -264,7 +264,7 @@ namespace BinderJetMotionControllerVer._1
 
         }
 
-        public bool SetEnc(short nAxis, double fValue)
+        internal bool SetEnc(short nAxis, double fValue)
         {
             short nRet = NMC2.nmc_SetEncPos(m_nDev_no, nAxis, fValue);
             switch (nRet)
@@ -281,7 +281,7 @@ namespace BinderJetMotionControllerVer._1
         }
 
         //  false - A 접점  ,   true  - B 접점
-        public bool SetEmerLogic(short logic)
+        internal bool SetEmerLogic(short logic)
         {
             short nRet = NMC2.nmc_SetEmgLogic(m_nDev_no, 0, logic);
 
@@ -298,7 +298,7 @@ namespace BinderJetMotionControllerVer._1
 
         }
         //  false - A 접점  ,   true  - B 접점
-        public bool SetPulseLogic(short nAxis,int logic)
+        internal bool SetPulseLogic(short nAxis,int logic)
         {
             short nRet = NMC2.nmc_SetPulseLogic(m_nDev_no, nAxis, (short)logic);
 
@@ -315,7 +315,7 @@ namespace BinderJetMotionControllerVer._1
 
         }
         //  false - A 접점  ,   true  - B 접점
-        public bool SetNearLogic(short nAxis, short logic)
+        internal bool SetNearLogic(short nAxis, short logic)
         {
             short nRet = NMC2.nmc_SetNearLogic(m_nDev_no, nAxis, logic);
 
@@ -332,7 +332,7 @@ namespace BinderJetMotionControllerVer._1
 
         }
 
-        public bool SetMinusLimitLogic(short nAxis, short logic)
+        internal bool SetMinusLimitLogic(short nAxis, short logic)
         {
             short nRet = NMC2.nmc_SetMinusLimitLogic(m_nDev_no, nAxis, logic);
             switch (nRet)
@@ -348,7 +348,7 @@ namespace BinderJetMotionControllerVer._1
 
         }
 
-        public bool SetPlusLimitLogic(short nAxis, short logic)
+        internal bool SetPlusLimitLogic(short nAxis, short logic)
         {
             short nRet = NMC2.nmc_SetPlusLimitLogic(m_nDev_no, nAxis, logic);
 
@@ -366,7 +366,7 @@ namespace BinderJetMotionControllerVer._1
         }
 
 
-        public bool SetAlarmLogic(short nAxis, short logic)
+        internal bool SetAlarmLogic(short nAxis, short logic)
         {
             short nRet = NMC2.nmc_SetAlarmLogic(m_nDev_no, nAxis, logic);
 
@@ -384,7 +384,7 @@ namespace BinderJetMotionControllerVer._1
         }
 
 
-        public bool SetPulseMode(short nAxis,short nClock)
+        internal bool SetPulseMode(short nAxis,short nClock)
         {
             short nRet = NMC2.nmc_SetPulseMode(m_nDev_no, nAxis, nClock);
             switch (nRet)
@@ -407,7 +407,7 @@ namespace BinderJetMotionControllerVer._1
         1 - 2
         2 - 1체배
         */
-        public bool SetEncCountMode( short nAxis,short nEncMode)
+        internal bool SetEncCountMode( short nAxis,short nEncMode)
         {
             short nRet = NMC2.nmc_SetEncoderCount(m_nDev_no, nAxis, nEncMode);
 
@@ -424,7 +424,7 @@ namespace BinderJetMotionControllerVer._1
 
         }
 
-        public bool SetEncInputMode(short nAxis,short nMode)
+        internal bool SetEncInputMode(short nAxis,short nMode)
         {
             short nRet = NMC2.nmc_SetEncoderDir(m_nDev_no, nAxis, nMode);
             switch (nRet)
@@ -441,7 +441,7 @@ namespace BinderJetMotionControllerVer._1
         }
 
         //  false - A 접점  ,   true  - B 접점
-        public bool SetZLogic(short nAxis, short logic)
+        internal bool SetZLogic(short nAxis, short logic)
         {
             short nRet = NMC2.nmc_SetEncoderZLogic(m_nDev_no, nAxis, logic);
             switch (nRet)
@@ -457,7 +457,7 @@ namespace BinderJetMotionControllerVer._1
 
         }
 
-        public bool HomeMove(short nAxis, int nHomeMode)
+        internal bool HomeMove(short nAxis, int nHomeMode)
         {
             short nRet = NMC2.nmc_HomeMove(m_nDev_no, nAxis, (short)nHomeMode, 0, 0, 0);
             switch (nRet)
@@ -472,7 +472,7 @@ namespace BinderJetMotionControllerVer._1
             return false;
         }
 
-        public bool GetNmcStatus(ref NMC2.NMCAXESEXPR pNmcData)
+        internal bool GetNmcStatus(ref NMC2.NMCAXESEXPR pNmcData)
         {
             short nRet = NMC2.nmc_GetAxesExpress(m_nDev_no, out pNmcData);
 
@@ -488,7 +488,7 @@ namespace BinderJetMotionControllerVer._1
             return false;
 
         }
-        public bool GetNmcStatus2(ref NMC2.NMCAXESEXPR pNmcData)
+        internal bool GetNmcStatus2(ref NMC2.NMCAXESEXPR pNmcData)
         {
             short nRet = NMC2.nmc_GetAxesExpress(m_nDev_no2, out pNmcData);
 
@@ -504,7 +504,7 @@ namespace BinderJetMotionControllerVer._1
             return false;
 
         }
-        public void SetUnitPulse(short nAxis, double dRatio)
+        internal void SetUnitPulse(short nAxis, double dRatio)
         {
             NMC2.nmc_SetUnitPerPulse(m_nDev_no, nAxis, dRatio);
         }
@@ -516,7 +516,7 @@ namespace BinderJetMotionControllerVer._1
         /// 
 
 
-        public bool SetHomeSpeed(short nAxisNo, double dHomeSpeed0, double dHomeSpeed1, double dHomeSpeed2)
+        internal bool SetHomeSpeed(short nAxisNo, double dHomeSpeed0, double dHomeSpeed1, double dHomeSpeed2)
         {
             short nRet = NMC2.nmc_SetHomeSpeed(m_nDev_no, nAxisNo, dHomeSpeed0, dHomeSpeed1, dHomeSpeed2);
             switch (nRet)
@@ -531,7 +531,7 @@ namespace BinderJetMotionControllerVer._1
             return false;
         }
 
-        public bool SetSWLimitLogic(short nAxis, short nMode, double pStart, double pEnd)
+        internal bool SetSWLimitLogic(short nAxis, short nMode, double pStart, double pEnd)
         {
             short nRet = NMC2.nmc_SetSWLimitLogicEx(m_nDev_no, nAxis, nMode, pStart, pEnd, 0x3);
             switch (nRet)
@@ -545,7 +545,7 @@ namespace BinderJetMotionControllerVer._1
 
             return false;
         }
-        public bool SetEmgEnable(short nMode)
+        internal bool SetEmgEnable(short nMode)
         {
             short nRet = NMC2.nmc_SetEmgEnable(m_nDev_no, nMode);
             switch (nRet)
@@ -560,7 +560,7 @@ namespace BinderJetMotionControllerVer._1
             return false;
         }
 
-        public bool SetServoOnOff(short nAxis, short nMode)
+        internal bool SetServoOnOff(short nAxis, short nMode)
         {
             short nRet = NMC2.nmc_SetServoOn(m_nDev_no, nAxis, nMode);
             switch (nRet)
@@ -575,7 +575,7 @@ namespace BinderJetMotionControllerVer._1
             return false;
         }
 
-        public void Printing()
+        internal void Printing()
         {
             //프린팅 시퀸스 추가 변수 선언부
 
@@ -619,7 +619,7 @@ namespace BinderJetMotionControllerVer._1
             }
         }
 
-        public void EmergencyStop()
+        internal void EmergencyStop()
         {
             NMC2.nmc_AllAxisStop(m_nDev_no, 1);
             NMC2.nmc_AllAxisStop(m_nDev_no2, 1);

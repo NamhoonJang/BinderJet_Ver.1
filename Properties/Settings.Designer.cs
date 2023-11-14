@@ -18,7 +18,7 @@ namespace BinderJetMotionControllerVer._1.Properties
 
         private static Settings defaultInstance = ((Settings)(global::System.Configuration.ApplicationSettingsBase.Synchronized(new Settings())));
 
-        public static Settings Default
+        internal static Settings Default
         {
             get
             {

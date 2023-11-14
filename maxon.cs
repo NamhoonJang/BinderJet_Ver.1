@@ -53,7 +53,10 @@ namespace BinderJetMotionControllerVer._1
 
         internal void Disable()
         {
-            sm.SetDisableState();
+            if (sm != null)
+            {
+                sm.SetDisableState();
+            }
         }
 
         internal void MotorMove_CW_CCW(int speed, uint acc, uint dec, bool path)

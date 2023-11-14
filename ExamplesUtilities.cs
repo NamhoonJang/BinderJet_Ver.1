@@ -24,7 +24,7 @@ namespace XAARWinform
     /// <summary>
     /// This class contains examples of how to use some of the features of the XPM using the libraries developed by Xaar.
     /// </summary>
-    public static class ExamplesUtilities
+    internal static class ExamplesUtilities
     {
         private const int InitialisationTimeout = 120000;
         private const int PhInitialisationTimeout = 50000;
@@ -36,7 +36,7 @@ namespace XAARWinform
         /// <param name="initialiser">The service to initialise the system</param>
         /// <param name="xpmInterconnection">The <see cref="XpmInterconnection"/> to interface to the XPM</param>
         /// <returns></returns>
-        public static int? InitialiseSystem(HardwareInitialiser initialiser, XpmInterconnection xpmInterconnection)
+        internal static int? InitialiseSystem(HardwareInitialiser initialiser, XpmInterconnection xpmInterconnection)
         {
             var numberOfBoxes = InitialiseSystemWithUserMessage(initialiser);
 
@@ -78,7 +78,7 @@ namespace XAARWinform
         /// <param name="port">The port where the printhead is connected (0-based)</param>
         /// <param name="xpmInterconnection">The <see cref="XpmInterconnection"/> to interface to the XPM</param>
         /// <returns>True if the printhead was succesfully powered, otherwise false</returns>
-        public static bool TurnOnPrinthead(string macAddress, int port, XpmInterconnection xpmInterconnection)
+        internal static bool TurnOnPrinthead(string macAddress, int port, XpmInterconnection xpmInterconnection)
         {
             Console.WriteLine();
             Console.WriteLine(@"\nTurning printhead {0} on.", port);
@@ -91,7 +91,7 @@ namespace XAARWinform
         /// Get certain global parameters
         /// </summary>
         /// <returns>The common print parameters to use</returns>
-        public static GlobalPrintParameters GetGlobalPrintParameters()
+        internal static GlobalPrintParameters GetGlobalPrintParameters()
         {
             var globalPrintParameters = new GlobalPrintParameters
             {
@@ -117,7 +117,7 @@ namespace XAARWinform
         /// <param name="swPdToGenerate">The number of sowftare PDs to generate</param>
         /// <param name="evt">The event set when all required software PDs have been generated</param>
         /// <returns>The <see cref="System.Timers.Timer"/> to control (start/stop) the generation of software PDs</returns>
-        public static Timer SetupSoftwarePdTimer(IPrintingService printingService,
+        internal static Timer SetupSoftwarePdTimer(IPrintingService printingService,
             string macAddress, int port,
             int swPdIntervalMilliseconds, int swPdToGenerate,
             AutoResetEvent evt)
@@ -147,7 +147,7 @@ namespace XAARWinform
         /// <summary>
         /// Start the swathe count monitoring task, which displays the swathe count when values change
         /// </summary>
-        public static void StartSwatheCountMonitoring(XpmInterconnection xpmInterconnection, string firstXpmMacAddress, 
+        internal static void StartSwatheCountMonitoring(XpmInterconnection xpmInterconnection, string firstXpmMacAddress, 
             bool printInitialValues, CancellationToken token, out Task task, Logger logger = null, int loopTime = 1000)
         {
             loopTime = Math.Min(50, loopTime);
@@ -203,7 +203,7 @@ namespace XAARWinform
             }, token);
         }
 
-        public static ProductDetect GetProductDetect(bool useSoftwareProductDetect = false)
+        internal static ProductDetect GetProductDetect(bool useSoftwareProductDetect = false)
         {
             ProductDetect productDetect;
             if (useSoftwareProductDetect)
@@ -242,7 +242,7 @@ namespace XAARWinform
             return productDetect;
         }
 
-        public static TransportEncoder GetTransportEncoder(bool useInternalTransportEncoder, int dpi = 360)
+        internal static TransportEncoder GetTransportEncoder(bool useInternalTransportEncoder, int dpi = 360)
         {
             TransportEncoder transportEncoder;
             if (useInternalTransportEncoder)
@@ -311,7 +311,7 @@ namespace XAARWinform
         /// </summary>
         /// <param name="initialiser"></param>
         /// <returns></returns>
-        public static int? InitialiseSystemWithUserMessage(HardwareInitialiser initialiser)
+        internal static int? InitialiseSystemWithUserMessage(HardwareInitialiser initialiser)
         {
             Console.Write(@"\nInitialising system...");
 
@@ -328,7 +328,7 @@ namespace XAARWinform
         /// <summary>
         /// Helper function to connect and wait for a printhead to be ready
         /// </summary>
-        public static bool ConnectAndWaitForPrintheadReady(XpmInterconnection xpmInterconnection, int xpmPort)
+        internal static bool ConnectAndWaitForPrintheadReady(XpmInterconnection xpmInterconnection, int xpmPort)
         {
             return _ConnectAndWaitForPrintheadsReady(xpmInterconnection, new[] {xpmPort});
         }
@@ -336,7 +336,7 @@ namespace XAARWinform
         /// <summary>
         /// Helper function to connect and wait for a collection of printheads to be ready
         /// </summary>
-        public static bool ConnectAndWaitForPrintheadReady(XpmInterconnection xpmInterconnection, IEnumerable<int> xpmPorts)
+        internal static bool ConnectAndWaitForPrintheadReady(XpmInterconnection xpmInterconnection, IEnumerable<int> xpmPorts)
         {
             return _ConnectAndWaitForPrintheadsReady(xpmInterconnection, xpmPorts);
         }
@@ -344,7 +344,7 @@ namespace XAARWinform
         /// <summary>
         /// Helper function to connect and wait for a collection of printheads to be ready for specific mac addresses
         /// </summary>
-        public static bool ConnectAndWaitForPrintheadReady(XpmInterconnection xpmInterconnection, IEnumerable<Tuple<string, int>> xpmPorts)
+        internal static bool ConnectAndWaitForPrintheadReady(XpmInterconnection xpmInterconnection, IEnumerable<Tuple<string, int>> xpmPorts)
         {
             return _ConnectAndWaitForPrintheadsReady(xpmInterconnection, xpmPorts);
         }
@@ -352,7 +352,7 @@ namespace XAARWinform
         /// <summary>
         /// Setup the encoder and product detect
         /// </summary>
-        public static void SetupEncoderAndProductDetect(XpmInterconnection xpmInterconnection, string macAddress, 
+        internal static void SetupEncoderAndProductDetect(XpmInterconnection xpmInterconnection, string macAddress, 
             int xpmPort, bool useInternalProductDetect = false, bool useInternalEncoder = false, 
             int tePdChainIndex = 0)
         {
@@ -363,7 +363,7 @@ namespace XAARWinform
         /// <summary>
         /// Setup the encoder and product detect for a collection of ports
         /// </summary>
-        public static void SetupEncoderAndProductDetect(XpmInterconnection xpmInterconnection, string macAddress,
+        internal static void SetupEncoderAndProductDetect(XpmInterconnection xpmInterconnection, string macAddress,
                 IEnumerable<int> xpmPorts, bool useInternalProductDetect = false, bool useInternalEncoder = false, 
                 int tePdChainIndex = 0, int dpi = 360)
         {
@@ -375,7 +375,7 @@ namespace XAARWinform
         /// Get the path to the images to print
         /// </summary>
         /// <returns>The path to the images</returns>
-        public static string GetImagePath()
+        internal static string GetImagePath()
         {
             var assemblyName = Assembly.GetExecutingAssembly().GetName().CodeBase;
             var assemblyPath = assemblyName.Replace("file:///", string.Empty);
@@ -390,7 +390,7 @@ namespace XAARWinform
         /// Get the path to the test waveforms
         /// </summary>
         /// <returns>The path to the test waveforms</returns>
-        public static string GetWaveformPath()
+        internal static string GetWaveformPath()
         {
             var assemblyName = Assembly.GetExecutingAssembly().GetName().CodeBase;
             var assemblyPath = assemblyName.Replace("file:///", string.Empty);
@@ -410,7 +410,7 @@ namespace XAARWinform
         /// <returns>A list of swathe tags identifying the swathes downloaded</returns>
         /// <param name="swatheStartIndex">The swathe index to use for tagging purposes, allowing subsequent calls to use unique tags</param>
         /// <returns>A list of swathe tags identifying the swathes downloaded</returns>
-        public static List<string> DownloadHighLaydown1000PixelWideSwathes(XpmInterconnection xpmInterconnection, string macAddress, int swathesRequired, int swatheStartIndex = 0)
+        internal static List<string> DownloadHighLaydown1000PixelWideSwathes(XpmInterconnection xpmInterconnection, string macAddress, int swathesRequired, int swatheStartIndex = 0)
         {
             var tagList = new List<string>();
             var path = GetImagePath();
@@ -459,7 +459,7 @@ namespace XAARWinform
         /// <returns>A list of swathe tags identifying the swathes downloaded</returns>
         /// <param name="swatheStartIndex">The swathe index to use for tagging purposes, allowing subsequent calls to use unique tags</param>
         /// <returns>A list of swathe tags identifying the swathes downloaded</returns>
-        public static List<string> Download1000PixelWideSwathes(XpmInterconnection xpmInterconnection, string macAddress, int swathesRequired, int swatheStartIndex = 0)
+        internal static List<string> Download1000PixelWideSwathes(XpmInterconnection xpmInterconnection, string macAddress, int swathesRequired, int swatheStartIndex = 0)
         {
             var tagList = new List<string>();
             var path = GetImagePath();
@@ -506,7 +506,7 @@ namespace XAARWinform
         /// <param name="numberOfSwathesRequired">The number of swathes required to be downloaded</param>
         /// <param name="swatheStartIndex">The swathe index to use for tagging purposes, allowing subsequent calls to use unique tags</param>
         /// <returns>A list of swathe tags identifying the swathes downloaded</returns>
-        public static List<string> Download2000PixelWideSwathes(XpmInterconnection xpmInterconnection, string macAddress, int numberOfSwathesRequired, int swatheStartIndex = 0)
+        internal static List<string> Download2000PixelWideSwathes(XpmInterconnection xpmInterconnection, string macAddress, int numberOfSwathesRequired, int swatheStartIndex = 0)
         {
             var tagList = new List<string>();
             var imagePath = GetImagePath();
@@ -557,7 +557,7 @@ namespace XAARWinform
         /// <param name="macAddress">Download images to the XPM with this MAC address</param>
         /// <param name="numberOfSwathesRequired">The number of swathes required to be downloaded</param>
         /// <returns>A list of swathe tags identifying the swathes downloaded</returns>
-        public static List<string> DownloadSwathesForXaar2001PairRows(XpmInterconnection xpmInterconnection, string macAddress, int numberOfSwathesRequired)
+        internal static List<string> DownloadSwathesForXaar2001PairRows(XpmInterconnection xpmInterconnection, string macAddress, int numberOfSwathesRequired)
         {
             var tagList = new List<string>();
             var imagePath = GetImagePath();
@@ -618,7 +618,7 @@ namespace XAARWinform
         /// <param name="macAddress">Download images to the XPM with this MAC address</param>
         /// <param name="numberOfSwathesRequired">The number of swathes required to be downloaded</param>
         /// <returns>A list of swathe tags identifying the swathes downloaded</returns>
-        public static List<string> DownloadSwathesForXaar2001SingleRows(XpmInterconnection xpmInterconnection, string macAddress, int numberOfSwathesRequired)
+        internal static List<string> DownloadSwathesForXaar2001SingleRows(XpmInterconnection xpmInterconnection, string macAddress, int numberOfSwathesRequired)
         {
             var tagList = new List<string>();
             var imagePath = GetImagePath();
@@ -686,7 +686,7 @@ namespace XAARWinform
         /// <param name="phType">The supported printhead type</param>
         /// <param name="port">The XPM port (0-based)</param>
         /// <returns>The printhead with some default settings</returns>
-        public static Printhead GetDefaultPrintead(PrintheadType phType, int port)
+        internal static Printhead GetDefaultPrintead(PrintheadType phType, int port)
         {
             var printheadFactory = new PrintheadFactory();
             PrintheadProperties phProperties = printheadFactory.GetPrintheadProperties(phType); ;
@@ -703,7 +703,7 @@ namespace XAARWinform
                 rowOffsets: new List<double>(arr), useDir: false, mirrorImage: false);
         }
 
-        public static SystemConfiguration LoadSystemConfiguration(string systemConfigurationFile, Logger logger)
+        internal static SystemConfiguration LoadSystemConfiguration(string systemConfigurationFile, Logger logger)
         {
             var repository = new SystemRepository(logger);
             var path = Path.GetDirectoryName(Assembly.GetExecutingAssembly().GetName().CodeBase)
@@ -729,7 +729,7 @@ namespace XAARWinform
             return systemConfiguration;
         }
 
-        public static void SetupEncodersAndProductDetects(XpmInterconnection xpmInterconnection, SystemConfiguration sc,
+        internal static void SetupEncodersAndProductDetects(XpmInterconnection xpmInterconnection, SystemConfiguration sc,
             Dictionary<string, IList<int>> phMapSubset, int inputStablePeriod = 8)
         {
             foreach (var macAddress in phMapSubset.Keys)

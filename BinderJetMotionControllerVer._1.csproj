@@ -58,7 +58,7 @@
   <ItemGroup>
     <Reference Include="EposCmd.Net, Version=6.7.1.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>bin\Debug\EposCmd.Net.dll</HintPath>
+      <HintPath>.\EposCmd.Net.dll</HintPath>
     </Reference>
     <Reference Include="MetroFramework, Version=1.4.0.0, Culture=neutral, PublicKeyToken=5f91a84759bf584a, processorArchitecture=MSIL">
       <HintPath>packages\MetroModernUI.1.4.0.0\lib\net\MetroFramework.dll</HintPath>
@@ -70,7 +70,7 @@
       <HintPath>packages\MetroModernUI.1.4.0.0\lib\net\MetroFramework.Fonts.dll</HintPath>
     </Reference>
     <Reference Include="NLog">
-      <HintPath>bin\Debug\NLog.dll</HintPath>
+      <HintPath>.\NLog.dll</HintPath>
     </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="System" />
@@ -92,16 +92,19 @@
     <Reference Include="System.Xml" />
     <Reference Include="WindowsBase" />
     <Reference Include="Xaar.Common">
-      <HintPath>C:\Program Files\Xaar\XPM Suite-3.0.7741.96\Xaar.Common.dll</HintPath>
+      <HintPath>.\Xaar.Common.dll</HintPath>
     </Reference>
     <Reference Include="Xaar.Core">
-      <HintPath>C:\Program Files\Xaar\XPM Suite-3.0.7741.96\Xaar.Core.dll</HintPath>
+      <HintPath>.\Xaar.Core.dll</HintPath>
     </Reference>
     <Reference Include="Xaar.Framework">
-      <HintPath>C:\Program Files\Xaar\XPM Suite-3.0.7741.96\Xaar.Framework.dll</HintPath>
+      <HintPath>.\Xaar.Framework.dll</HintPath>
     </Reference>
     <Reference Include="Xaar.XpmServer.Core">
-      <HintPath>C:\Program Files\Xaar\XPM Suite-3.0.7741.96\Xaar.XpmServer.Core.dll</HintPath>
+      <HintPath>.\Xaar.XpmServer.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Xceed.Wpf.Toolkit">
+      <HintPath>.\Xceed.Wpf.Toolkit.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>

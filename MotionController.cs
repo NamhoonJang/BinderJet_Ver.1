@@ -15,9 +15,9 @@ using EposCmd.Net.DeviceCmdSet.Operation;
 
 namespace BinderJetMotionControllerVer._1
 {
-    public partial class MotionController : Form
+    internal partial class MotionController : Form
     {
-        public string[] NMCDesc = {
+        internal string[] NMCDesc = {
                                 "NMC2_220S"
                                 ,"NMC2_420S"
                                 ,"NMC2_620S"
@@ -46,7 +46,7 @@ namespace BinderJetMotionControllerVer._1
         Paix_MotionController.NMC2.NMCAXESEXPR NmcData = new Paix_MotionController.NMC2.NMCAXESEXPR();
         Paix_MotionController.NMC2.NMCAXESEXPR NmcData2 = new Paix_MotionController.NMC2.NMCAXESEXPR();
         private SerialPort Serial_RS485 = new SerialPort();
-        public ArrayList arrSerialbuff = new ArrayList();
+        internal ArrayList arrSerialbuff = new ArrayList();
         XAARWinform.PrintheadCon Printhead = new XAARWinform.PrintheadCon();
         
 
@@ -56,9 +56,9 @@ namespace BinderJetMotionControllerVer._1
         // private int Speed = 2;
         // private int Control_ON_OFF = 3;
 
-        public uint ID_485;
-        public string State_485;
-        public string Setting_485;
+        internal uint ID_485;
+        internal string State_485;
+        internal string Setting_485;
 
 
         private const short Xaxis = 0;
@@ -114,10 +114,10 @@ namespace BinderJetMotionControllerVer._1
         private const double zPosMaxLimit = 99.5;
         private const double zPosMinLimit = -29.5;
 
-        public double xPos = 0;
-        public double x2Pos = 0;
-        public double yPos = 0;
-        public double zPos = 0;
+        internal double xPos = 0;
+        internal double x2Pos = 0;
+        internal double yPos = 0;
+        internal double zPos = 0;
 
         private short devID;
         private short devID2;
@@ -179,7 +179,7 @@ namespace BinderJetMotionControllerVer._1
         StateMachine sm;
         Maxon MaxBLDC = new Maxon();
 
-        public MotionController()
+        internal MotionController()
         {
             InitializeComponent();
             PaixMotion = new PaixMotion();
@@ -381,7 +381,7 @@ namespace BinderJetMotionControllerVer._1
 
         }
 
-        public void watchSensor()
+        internal void watchSensor()
         {
             while (true)
             {
@@ -392,7 +392,7 @@ namespace BinderJetMotionControllerVer._1
                 
             }
         }
-        public void watchLogger()
+        internal void watchLogger()
         {
             while (true)
             {
@@ -444,7 +444,7 @@ namespace BinderJetMotionControllerVer._1
 
 
         }
-        public void updateLog()
+        internal void updateLog()
         {
             if (!logStart)
             {
@@ -549,7 +549,7 @@ namespace BinderJetMotionControllerVer._1
 
             logStart = true;
         }
-        public void updateCmdEnc()
+        internal void updateCmdEnc()
         {
             if (PaixMotion.GetNmcStatus(ref NmcData) == false) return;
             if (PaixMotion.GetNmcStatus2(ref NmcData2) == false) return;
@@ -3652,12 +3652,13 @@ namespace BinderJetMotionControllerVer._1
 
         private void MotionController_FormClosing(object sender, FormClosingEventArgs e)
         {
-            Logger.WriteButtonLog("PROGRAM END", logButtonPath);
+            if(logButtonPath!=null) Logger.WriteButtonLog("PROGRAM END", logButtonPath);
             Printhead.Disconnect();
             //맥슨대기해제
             MaxBLDC.Disable();
             MaxBLDC.Disconnect();
             Thread.Sleep(1000);
+            Application.Exit();
             Environment.Exit(0);
         }
         private void btnXposToZero_Click(object sender, EventArgs e)
